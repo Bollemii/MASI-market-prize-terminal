@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+generator db {
+  provider             = "prisma-client-py"
+  interface            = "sync"
+  recursive_type_depth = 5
+}
+
+model User{
+    id Int @id @default(autoincrement())
+    email String @unique
+    password String
+    city_id Int
+    city City @relation(fields: [city_id], references: [id])
+    is_tenant Boolean @default(false)
+    tickets Ticket[]
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    deleted_at DateTime?
+}
+
+model City{
+    id Int @id @default(autoincrement())
+    name String
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    User User[]
+}
+
+model Prize{
+    id Int @id @default(autoincrement())
+    name String
+    tickets Ticket[]
+    description String
+    nb_available Int
+    nb_won Int
+}
+
+model Ticket{
+    code String @id
+    prize_id Int
+    user_id Int
+    user User @relation(fields: [user_id], references: [id])
+    prize Prize @relation(fields: [prize_id], references: [id])
+}

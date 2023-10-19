@@ -1,0 +1,10 @@
+venv
+activate
+__pycache__
+.pytest_cache
+.vscode
+.idea
+.venv
+docs
+dev.db
+dev.db-journal
