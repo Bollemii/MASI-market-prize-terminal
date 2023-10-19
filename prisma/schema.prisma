@@ -11,40 +11,48 @@ generator db {
   recursive_type_depth = 5
 }
 
-model User{
-    id Int @id @default(autoincrement())
-    email String @unique
-    password String
-    city_id Int
-    city City @relation(fields: [city_id], references: [id])
-    is_tenant Boolean @default(false)
-    tickets Ticket[]
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-    deleted_at DateTime?
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  passwrord String
+  is_tenant Boolean
+  created   DateTime @default(now())
+  updated   DateTime @updatedAt
 }
 
 model City{
-    id Int @id @default(autoincrement())
-    name String
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-    User User[]
-}
-
-model Prize{
-    id Int @id @default(autoincrement())
-    name String
-    tickets Ticket[]
-    description String
-    nb_available Int
-    nb_won Int
+  id       Int      @id @default(autoincrement())
+  name     String
+  postal_code Int
 }
 
 model Ticket{
-    code String @id
-    prize_id Int
-    user_id Int
-    user User @relation(fields: [user_id], references: [id])
-    prize Prize @relation(fields: [prize_id], references: [id])
+  code    String   @id @default(uuid())
+  tombola Tombola  @relation(fields: [tombolaId], references: [id])
+  tombolaId Int
+}
+
+model Tombola{
+  id      Int      @id @default(autoincrement())
+  name     String
+  tickets  Ticket[]
+  created  DateTime @default(now())
+  updated  DateTime @updatedAt
+  tombola_prizes Tombola_Prize[]
+}
+
+model Tombola_Prize{
+  id      Int      @id @default(autoincrement())
+  tombola Tombola  @relation(fields: [tombolaId], references: [id])
+  tombolaId Int
+  prize   Prize    @relation(fields: [prizeId], references: [id])
+  prizeId Int
+  created  DateTime @default(now())
+  updated  DateTime @updatedAt
+}
+
+model Prize{
+  id     Int      @id @default(autoincrement())
+  description String
+  tombola_prizes Tombola_Prize[]
 }
