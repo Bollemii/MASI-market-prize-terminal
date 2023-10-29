@@ -1,24 +1,45 @@
-from prisma import Prisma
-import bcrypt
+from dataaccess.dao import user_dao  # type: ignore
+
+from models.city import City
+
 
 class User:
     id: int
     email: str
     passwrord: str
+    city: City
     is_tenant: bool
 
-    def update(self, email: str, password: str) -> 'User':
-        with Prisma() as db:
-            return db.user.update({"where": {"id": self.id}, "data": {"email": email, "password": bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')}})
+    def __init__(
+        self,
+        id: int,
+        email: str,
+        password: str,
+        city: str,
+        postal_code: str,
+        is_tenant: bool = False,
+    ):
+        self.id = id
+        self.email = email
+        self.password = password
+        self.city = City(None, city, postal_code)
+        self.is_tenant = is_tenant
+
+    def update(self, email: str, password: str) -> "User":
+        return user_dao.update(self, email, password)
 
     @staticmethod
-    def connection(email: str, password: str) -> 'User':
-        with Prisma() as db:
-            return db.user.find_first(where={"email": email, "password": password})
-        
+    def connection(email: str, password: str) -> "User":
+        return user_dao.connection(email, password)
+
     @staticmethod
-    def register(email: str, password: str, confirm_password: str) -> 'User':
-        if password != confirm_password:
-            raise Exception("Password and confirm password must be same")
-        with Prisma() as db:
-            return db.user.create({"data": {"email": email, "password": bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')}})
+    def register(
+        email: str,
+        password: str,
+        config_password: str,
+        city_name: str,
+        postal_code: str,
+    ) -> "User":
+        if password != config_password:
+            raise Exception("Password is not match")
+        return user_dao.register(email, password, city_name, postal_code)
