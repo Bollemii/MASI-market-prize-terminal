@@ -1,4 +1,4 @@
-from prisma import Prisma
+from prisma import Prisma  # type: ignore
 import atexit
 
 db = Prisma()
