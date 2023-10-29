@@ -27,7 +27,7 @@ model User {
 model City{
   id          Int       @id @default(autoincrement())
   name        String
-  postal_code Int
+  postal_code String
   users       User[]
 }
 
