@@ -24,3 +24,17 @@ repos:
     rev: "6.1.0"
     hooks:
       - id: flake8
+  - repo: local
+    hooks:
+      - id: requirements
+        name: requirements
+        entry: "pip3 freeze > requirements.txt; git add requirements.txt"
+        language: system
+        pass_filenames: false
+        stages: [commit]
+      - id: git
+        name: git
+        entry: "git add ."
+        language: system
+        pass_filenames: false
+        stages: [commit]
