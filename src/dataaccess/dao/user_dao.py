@@ -1,3 +1,4 @@
+from dataaccess.dao import city_dao
 from entity.user_entity import User as UserEntity
 from models.user import User as User
 
@@ -7,8 +8,7 @@ def convert_user_entity_to_user_model(entity: UserEntity) -> User:
         id=entity.id,
         email=entity.email,
         password=entity.password,
-        city=entity.city.name,
-        postal_code=entity.city.postal_code,
+        city=city_dao.convert_city_entity_to_city_model(entity.city),
         is_tenant=entity.is_tenant,
     )
 
