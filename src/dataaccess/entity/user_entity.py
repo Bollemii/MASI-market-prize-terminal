@@ -1,7 +1,7 @@
 from prisma import Prisma  # type: ignore
 import bcrypt
 
-from entity.city_entity import City
+from dataaccess.entity.city_entity import City
 
 
 class User:

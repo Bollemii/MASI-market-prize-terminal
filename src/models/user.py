@@ -1,4 +1,4 @@
-from dataaccess.dao import user_dao  # type: ignore
+from dataaccess.dao import user_dao
 
 from models.city import City
 
@@ -15,14 +15,13 @@ class User:
         id: int,
         email: str,
         password: str,
-        city: str,
-        postal_code: str,
+        city: City,
         is_tenant: bool = False,
     ):
         self.id = id
         self.email = email
         self.password = password
-        self.city = City(None, city, postal_code)
+        self.city = city
         self.is_tenant = is_tenant
 
     def update(self, email: str, password: str) -> "User":
