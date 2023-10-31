@@ -5,10 +5,6 @@ from dataaccess.entity.prize_entity import Prize
 
 
 class Ticket:
-    code: str
-    prize: Prize | None
-    user: User | None
-
     def __init__(self, code: str, prize: Prize | None, user: User | None):
         self.code = code
         self.prize = prize
