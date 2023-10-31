@@ -4,12 +4,6 @@ from models.city import City
 
 
 class User:
-    id: int
-    email: str
-    passwrord: str
-    city: City
-    is_tenant: bool
-
     def __init__(
         self,
         id: int,

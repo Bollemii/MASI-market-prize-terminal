@@ -4,10 +4,6 @@ from models.prize import Prize
 
 
 class Ticket:
-    code: str
-    prize: Prize | None
-    user: User | None
-
     def __init__(self, code: str, prize: Prize | None, user: User | None):
         self.code = code
         self.prize = prize
