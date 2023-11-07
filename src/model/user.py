@@ -1,4 +1,4 @@
-from src.dataaccess.entity.city_entity import City
+from src.model.city import City
 
 
 class User:
