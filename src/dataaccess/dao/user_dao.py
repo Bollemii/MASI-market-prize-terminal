@@ -1,13 +1,13 @@
 from src.dataaccess.entity.user_entity import User as UserEntity
 from src.dataaccess.repository.user_repository import UserRepository
 from src.model.user import User as User
-from city_dao import CityDAO
+from src.dataaccess.dao.city_dao import CityDAO
 
 
 class UserDAO:
-    def __init__(self):
-        self.user_repository = UserRepository()
-        self.city_dao = CityDAO()
+    def __init__(self, base_path: str):
+        self.user_repository = UserRepository(base_path)
+        self.city_dao = CityDAO(base_path)
 
     def convert_user_entity_to_user_model(self, entity: UserEntity) -> User:
         return User(
@@ -18,7 +18,7 @@ class UserDAO:
             is_tenant=entity.is_tenant,
         )
 
-    def connection(self, email: str, password: str) -> "User" | None:
+    def connection(self, email: str, password: str) -> User | None:
         entity = self.user_repository.connection(email, password)
         if entity is None:
             return None
@@ -30,6 +30,6 @@ class UserDAO:
         entity = self.user_repository.register(email, password, city_name, postal_code)
         return self.convert_user_entity_to_user_model(entity)
 
-    def update(self, user: User, email: str, password: str) -> "User":
+    def update(self, user: User, email: str, password: str) -> User:
         entity = self.user_repository.update(user.id, email, password)
         return self.convert_user_entity_to_user_model(entity)

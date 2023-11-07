@@ -9,3 +9,4 @@ docs
 dev.db
 dev.db-journal
 migrations
+data/
