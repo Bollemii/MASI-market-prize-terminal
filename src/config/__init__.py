@@ -1,1 +1,1 @@
-from .prisma_client import db
+from .db import Datalayer
