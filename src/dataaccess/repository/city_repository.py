@@ -6,6 +6,16 @@ class CityRepository:
     def __init__(self, base_path: str):
         self.repository = SqliteRepository(base_path)
 
+        self.repository.execute_create_table(
+            """
+            CREATE TABLE IF NOT EXISTS city (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                postal_code TEXT NOT NULL
+            );
+        """
+        )
+
     def get_by_id(self, id: int) -> City | None:
         result = self.repository.execute_query("SELECT * FROM city WHERE id = ?", (id,))
         if len(result) == 0:

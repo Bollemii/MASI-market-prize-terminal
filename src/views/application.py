@@ -5,11 +5,8 @@ from src.controllers.register_controller import RegisterController
 
 
 class Application:
-    def __init__(self):
-        pass
-
-    def run(self):
-        print("Startup")
+    @staticmethod
+    def run():
         base_path = os.path.join(os.getcwd(), "data")
         Application._prepare(base_path)
 

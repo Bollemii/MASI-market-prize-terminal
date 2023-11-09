@@ -1,8 +1,3 @@
-import sqlite3
-import logging
-
-logger = logging.getLogger(__name__)
-
 user_table_ddl = """
 CREATE TABLE "User" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -66,43 +61,3 @@ CREATE TABLE "Prize" (
     "description" TEXT NOT NULL
 );
 """
-
-
-class SingletonDatabase:
-    _instances = {}
-
-    def __init__(self, base_path: str):
-        self.cursor = sqlite3.connect(f"{base_path}/database.sqlite").cursor()
-        self.create_database()
-
-    # def __new__(cls, base_path: str):
-    #     if not hasattr(cls, "instance"):
-    #         cls.instance = super(SingletonDatabase, cls).__new__(cls)
-    #     return cls.instance
-
-    def __new__(cls, base_path: str):
-        if base_path not in cls._instances:
-            cls._instances[base_path] = super(SingletonDatabase, cls).__new__(cls)
-        return cls._instances[base_path]
-
-    def create_database(self):
-        all_tables = self.cursor.execute(
-            "SELECT name FROM sqlite_master WHERE type='table';"
-        ).fetchall()
-        if len(all_tables) == 0:
-            try:
-                logger.info("Creating tables")
-                self.cursor.execute("begin")
-                self.cursor.execute(user_table_ddl)
-                self.cursor.execute(city_table_ddl)
-                self.cursor.execute(ticket_table_ddl)
-                self.cursor.execute(tombola_table_ddl)
-                self.cursor.execute(tombola_prize_table_ddl)
-                self.cursor.execute(prize_table_ddl)
-                self.cursor.execute("commit")
-            except Exception as e:
-                self.cursor.execute("rollback")
-                raise e
-
-    def get_cursor(self):
-        return self.cursor

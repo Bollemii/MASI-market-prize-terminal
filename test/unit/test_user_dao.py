@@ -5,13 +5,20 @@ from src.dataaccess.dao.user_dao import UserDAO
 from src.dataaccess.entity.user_entity import User
 
 
-class TestUserManagement:
+class TestUserDAO:
     @pytest.fixture(scope="function", autouse=True, name="temp_folder")
     def create_temporary_testfolder(
         self, tmp_path_factory: pytest.TempPathFactory
     ) -> str:
-        base_path = "test_sqlite_community_repository"
+        base_path = "test_user_dao_repository"
         return str(tmp_path_factory.mktemp(base_path, True))
+
+    def test_init(self, temp_folder):
+        """Test init"""
+        user_dao = UserDAO(temp_folder)
+
+        assert user_dao.user_repository is not None
+        assert user_dao.city_dao is not None
 
     def test_dao_converter(self, temp_folder):
         entity = User(

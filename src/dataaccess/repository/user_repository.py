@@ -9,7 +9,22 @@ class UserRepository:
     def __init__(self, base_path: str):
         self.password_manager = PasswordManager()
         self.repository = SqliteRepository(base_path)
+
         self.city_repository = CityRepository(base_path)
+
+        self.repository.execute_create_table(
+            """
+            CREATE TABLE IF NOT EXISTS user (
+                "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                "email" TEXT NOT NULL UNIQUE,
+                "password" TEXT NOT NULL,
+                "is_tenant" BOOLEAN NOT NULL DEFAULT FALSE,
+                "city_id" INTEGER NOT NULL REFERENCES "City" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+                "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                "updated" DATETIME NULL
+            );
+        """
+        )
 
     def update(self, id: int, email: str, password: str):
         result = self.repository.execute_statement(
@@ -50,7 +65,8 @@ class UserRepository:
         )
         if result is None or len(result) == 0:
             raise Exception("User not created")
-        id, email, password, city_id, is_tenant = result[0]
+        print(result[0])
+        id, email, password, city_id, is_tenant, _, _ = result[0]
         return User(
             id, email, password, City(city_id, city_name, postal_code), is_tenant
         )
