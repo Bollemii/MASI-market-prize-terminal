@@ -1,6 +1,6 @@
 from src.views.connection_view import ConnectionView
 from src.dataaccess.dao.user_dao import UserDAO
-from src.model.user import User
+from src.model.user_model import UserModel
 
 
 class ConnectionController:
@@ -8,5 +8,5 @@ class ConnectionController:
         self.view = ConnectionView()
         self.user_dao = UserDAO(base_path)
 
-    def connection(self, email: str, password: str) -> User | None:
+    def connection(self, email: str, password: str) -> UserModel | None:
         return self.user_dao.connection(email, password)

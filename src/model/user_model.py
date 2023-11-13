@@ -1,13 +1,13 @@
-from src.model.city import City
+from src.model.city_model import CityModel
 
 
-class User:
+class UserModel:
     def __init__(
         self,
         id: int,
         email: str,
         password: str,
-        city: City,
+        city: CityModel,
         is_tenant: bool = False,
     ):
         self.id = id

@@ -1,13 +1,13 @@
-from src.dataaccess.entity.city_entity import City
+from src.dataaccess.entity.city_entity import CityEntity
 
 
-class User:
+class UserEntity:
     def __init__(
         self,
         id: int,
         email: str,
         password: str,
-        city: City,
+        city: CityEntity,
         is_tenant: bool = False,
     ):
         self.id = id

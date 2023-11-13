@@ -1,5 +1,5 @@
 from src.dataaccess.dao.user_dao import UserDAO
-from src.model.user import User
+from src.model.user_model import UserModel
 
 
 class RegisterController:
@@ -13,7 +13,7 @@ class RegisterController:
         confirm_password: str,
         city_name: str,
         postal_code: str,
-    ) -> User | None:
+    ) -> UserModel | None:
         if password != confirm_password:
             raise Exception("Passwords don't match")
         try:
