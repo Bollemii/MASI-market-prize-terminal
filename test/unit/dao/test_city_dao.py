@@ -1,7 +1,7 @@
 import pytest
 
 from src.dataaccess.dao.city_dao import CityDAO
-from src.dataaccess.entity.city_entity import City as CityEntity
+from src.dataaccess.entity.city_entity import CityEntity
 
 
 class TestCity:

@@ -1,4 +1,4 @@
-class Prize:
+class PrizeModel:
     def __init__(self, id: int, description: str, nb_available: int, nb_won: int):
         self.id = id
         self.description = description
