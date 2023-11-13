@@ -1,4 +1,4 @@
-from src.views.application import Application
+from src.application import Application
 
 
 if __name__ == "__main__":
