@@ -15,12 +15,15 @@ class CityRepository(SqliteRepository):
         """
         )
 
+    def create_entity(self, id: int, name: str, postal_code: str) -> CityEntity:
+        return CityEntity(id, name, postal_code)
+
     def get_by_id(self, id: int) -> CityEntity | None:
         result = self.execute_query("SELECT * FROM city WHERE id = ?", (id,))
         if len(result) == 0:
             return None
         id, name, postal_code = result[0]
-        return CityEntity(id, name, postal_code)
+        return self.create_entity(id, name, postal_code)
 
     def get_by_name_and_postal_code(
         self, name: str, postal_code: str
@@ -31,7 +34,7 @@ class CityRepository(SqliteRepository):
         if len(result) == 0:
             return None
         id, name, postal_code = result[0]
-        return CityEntity(id, name, postal_code)
+        return self.create_entity(id, name, postal_code)
 
     def create(self, name: str, postal_code: str) -> CityEntity:
         result = self.execute_statement(
@@ -40,4 +43,4 @@ class CityRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise Exception("City not created")
         id, name, postal_code = result[0]
-        return CityEntity(id, name, postal_code)
+        return self.create_entity(id, name, postal_code)

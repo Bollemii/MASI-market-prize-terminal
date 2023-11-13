@@ -1,4 +1,3 @@
-from src.dataaccess.entity.city_entity import CityEntity
 from src.utils.password_manager import PasswordManager
 from src.dataaccess.repository.city_repository import CityRepository
 from src.dataaccess.repository.sqlite_repository import SqliteRepository
@@ -26,15 +25,20 @@ class UserRepository(SqliteRepository):
         """
         )
 
+    def create_entity(
+        self, id: int, email: str, password: str, city_id: int, is_tenant: bool
+    ) -> UserEntity:
+        city = self.city_repository.get_by_id(city_id)
+        if city is None:
+            raise Exception("City not found")
+        return UserEntity(id, email, password, city, is_tenant)
+
     def get_by_id(self, id: int) -> UserEntity | None:
         result = self.execute_query("SELECT * FROM user WHERE id = ?", (id,))
         if len(result) == 0:
             return None
         id, email, password, city_id, is_tenant = result[0]
-        city = self.city_repository.get_by_id(city_id)
-        if city is None:
-            raise Exception("City not found")
-        return UserEntity(id, email, password, city, is_tenant)
+        return self.create_entity(id, email, password, city_id, is_tenant)
 
     def update(self, id: int, email: str, password: str):
         result = self.execute_statement(
@@ -44,10 +48,7 @@ class UserRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise Exception("User not updated")
         id, email, password, city_id, is_tenant = result[0]
-        city = self.city_repository.get_by_id(city_id)
-        if city is None:
-            raise Exception("City not found")
-        return UserEntity(id, email, password, city, is_tenant)
+        return self.create_entity(id, email, password, city_id, is_tenant)
 
     def connection(self, email: str, password: str) -> UserEntity | None:
         result = self.execute_query(
@@ -57,10 +58,7 @@ class UserRepository(SqliteRepository):
         if len(result) == 0:
             return None
         id, email, password, city_id, is_tenant = result[0]
-        city = self.city_repository.get_by_id(city_id)
-        if city is None:
-            raise Exception("City not found")
-        return UserEntity(id, email, password, city, is_tenant)
+        return self.create_entity(id, email, password, city_id, is_tenant)
 
     def register(
         self, email: str, password: str, city_name: str, postal_code: str
@@ -75,8 +73,6 @@ class UserRepository(SqliteRepository):
         )
         if result is None or len(result) == 0:
             raise Exception("User not created")
-        print(result[0])
+
         id, email, password, city_id, is_tenant, _, _ = result[0]
-        return UserEntity(
-            id, email, password, CityEntity(city_id, city_name, postal_code), is_tenant
-        )
+        return self.create_entity(id, email, password, city_id, is_tenant)
