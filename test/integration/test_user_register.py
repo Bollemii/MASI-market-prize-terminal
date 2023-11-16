@@ -20,7 +20,7 @@ class TestUserIntegration:
 
     def test_register_from_repository(self, temp_folder):
         city = CityEntity(1, "Bruxelles", "1000")
-        user = UserEntity(1, "test@test.be", "password", city, True)
+        user = UserEntity(1, "test@test.be", "password", city)
 
         user_repository = UserRepository(temp_folder)
         result = user_repository.register(
@@ -37,7 +37,7 @@ class TestUserIntegration:
 
     def test_register_from_dao(self, temp_folder):
         city = CityModel(1, "Bruxelles", "1000")
-        user = UserModel(1, "test@test.be", "password", city, True)
+        user = UserModel(1, "test@test.be", "password", city)
 
         user_dao = UserDAO(temp_folder)
         result = user_dao.register(

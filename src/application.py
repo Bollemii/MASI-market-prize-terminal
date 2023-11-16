@@ -1,6 +1,7 @@
 import os
 
 from src.controllers.connection_controller import ConnectionController
+from src.controllers.play_ticket_controller import PlayTicketController
 from src.controllers.register_controller import RegisterController
 
 
@@ -12,6 +13,7 @@ class Application:
 
         ConnectionController(base_path)
         RegisterController(base_path)
+        PlayTicketController(base_path)
 
     @staticmethod
     def _prepare(base_path: str):
