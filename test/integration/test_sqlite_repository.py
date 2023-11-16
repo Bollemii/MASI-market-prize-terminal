@@ -1,7 +1,7 @@
 import pytest
 import sqlite3
 
-from src.dataaccess.repository.sqlite_repository import SqliteRepository
+from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 
 
 class TestSqliteRepository:

@@ -1,4 +1,4 @@
-from src.dataaccess.repository.sqlite_repository import SqliteRepository
+from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 from src.dataaccess.repository.tombola_repository import TombolaRepository
 from src.dataaccess.repository.user_repository import UserRepository
 from src.dataaccess.repository.prize_repository import PrizeRepository
@@ -27,7 +27,7 @@ class TicketRepository(SqliteRepository):
         )
 
     def create_entity(
-        self, code: str, tombola_id: int, prize_id: int, user_id: int
+        self, code: str, tombola_id: int, prize_id: int | None, user_id: int | None
     ) -> TicketEntity:
         tombola = self.tombola_repository.get_by_id(tombola_id)
         if tombola is None:
@@ -58,5 +58,15 @@ class TicketRepository(SqliteRepository):
         )
         if result is None or len(result) == 0:
             raise Exception("Ticket not updated")
+        code, tombola_id, user_id, prize_id = result[0]
+        return self.create_entity(code, tombola_id, prize_id, user_id)
+
+    def create(self, code: str, tombola_id: int, prize_id: int | None) -> TicketEntity:
+        result = self.execute_statement(
+            """INSERT INTO ticket (code, tombola_id, prize_id) VALUES (?, ?, ?)""",
+            (code, tombola_id, prize_id),
+        )
+        if result is None or len(result) == 0:
+            raise Exception("Ticket not created")
         code, tombola_id, user_id, prize_id = result[0]
         return self.create_entity(code, tombola_id, prize_id, user_id)

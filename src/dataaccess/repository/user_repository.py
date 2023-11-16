@@ -1,6 +1,6 @@
 from src.utils.password_manager import PasswordManager
 from src.dataaccess.repository.city_repository import CityRepository
-from src.dataaccess.repository.sqlite_repository import SqliteRepository
+from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 from src.dataaccess.entity.user_entity import UserEntity
 
 
@@ -17,8 +17,8 @@ class UserRepository(SqliteRepository):
                 "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 "email" TEXT NOT NULL UNIQUE,
                 "password" TEXT NOT NULL,
-                "is_tenant" BOOLEAN NOT NULL DEFAULT FALSE,
                 "city_id" INTEGER NOT NULL REFERENCES "City" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+                "is_tenant" BOOLEAN NOT NULL DEFAULT FALSE,
                 "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 "updated" DATETIME NULL
             );
@@ -31,13 +31,13 @@ class UserRepository(SqliteRepository):
         city = self.city_repository.get_by_id(city_id)
         if city is None:
             raise Exception("City not found")
-        return UserEntity(id, email, password, city, is_tenant)
+        return UserEntity(id, email, password, city, bool(is_tenant))
 
     def get_by_id(self, id: int) -> UserEntity | None:
         result = self.execute_query("SELECT * FROM user WHERE id = ?", (id,))
         if len(result) == 0:
             return None
-        id, email, password, city_id, is_tenant = result[0]
+        id, email, password, city_id, is_tenant, _, _ = result[0]
         return self.create_entity(id, email, password, city_id, is_tenant)
 
     def update(self, id: int, email: str, password: str):
@@ -47,7 +47,7 @@ class UserRepository(SqliteRepository):
         )
         if result is None or len(result) == 0:
             raise Exception("User not updated")
-        id, email, password, city_id, is_tenant = result[0]
+        id, email, password, city_id, is_tenant, _, _ = result[0]
         return self.create_entity(id, email, password, city_id, is_tenant)
 
     def connection(self, email: str, password: str) -> UserEntity | None:
@@ -57,7 +57,7 @@ class UserRepository(SqliteRepository):
         )
         if len(result) == 0:
             return None
-        id, email, password, city_id, is_tenant = result[0]
+        id, email, password, city_id, is_tenant, _, _ = result[0]
         return self.create_entity(id, email, password, city_id, is_tenant)
 
     def register(

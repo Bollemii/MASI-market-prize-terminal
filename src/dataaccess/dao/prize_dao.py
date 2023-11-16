@@ -17,3 +17,11 @@ class PrizeDAO:
             entity.nb_available,
             entity.nb_won,
         )
+
+    def prize_won(self, prize: PrizeModel) -> PrizeModel:
+        entity = self.prize_repository.prize_won(prize.id)
+        return self.convert_prize_entity_to_prize_model(entity)
+
+    def create(self, tombola_id: int, description: str, quantity: int) -> PrizeModel:
+        entity = self.prize_repository.create(tombola_id, description, quantity)
+        return self.convert_prize_entity_to_prize_model(entity)
