@@ -10,7 +10,7 @@ class TestUserDAO:
     def create_temporary_testfolder(
         self, tmp_path_factory: pytest.TempPathFactory
     ) -> str:
-        base_path = "test_user_dao_repository"
+        base_path = "test_user_dao"
         return str(tmp_path_factory.mktemp(base_path, True))
 
     def test_init(self, temp_folder):

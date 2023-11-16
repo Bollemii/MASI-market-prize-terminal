@@ -14,7 +14,7 @@ class TestTicketDAO:
     def create_temporary_testfolder(
         self, tmp_path_factory: pytest.TempPathFactory
     ) -> str:
-        base_path = "test_city_repository"
+        base_path = "test_ticket_dao"
         return str(tmp_path_factory.mktemp(base_path, True))
 
     def test_converter_entity_to_model(self, temp_folder):
