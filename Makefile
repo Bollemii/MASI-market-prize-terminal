@@ -13,9 +13,3 @@ pre-run:
 pre-install:
 	- pip install pre-commit
 	- pre-commit install
-
-db-migrate:
-	- prisma migrate dev --name init
-
-db-generate:
-	- prisma generate
