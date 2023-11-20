@@ -40,7 +40,9 @@ class SqliteRepository:
         self.db_cursor = self.singleton_database.get_cursor()
 
         if not statement.startswith("DELETE"):
-            statement += " RETURNING *"
+            if statement.endswith(";"):
+                statement = statement[:-1]
+            statement += " RETURNING *;"
 
         self.db_cursor.execute(statement, params)
 

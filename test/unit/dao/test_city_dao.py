@@ -1,7 +1,7 @@
 import pytest
 
 from src.dataaccess.dao.city_dao import CityDAO
-from src.dataaccess.entity.city_entity import City as CityEntity
+from src.dataaccess.entity.city_entity import CityEntity
 
 
 class TestCity:
@@ -9,7 +9,7 @@ class TestCity:
     def create_temporary_testfolder(
         self, tmp_path_factory: pytest.TempPathFactory
     ) -> str:
-        base_path = "test_city_repository"
+        base_path = "test_city_dao"
         return str(tmp_path_factory.mktemp(base_path, True))
 
     def test_entity_model_city_convertion(self, temp_folder):

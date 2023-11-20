@@ -4,10 +4,10 @@ from src.dataaccess.dao.user_dao import UserDAO
 from src.dataaccess.repository.user_repository import UserRepository
 from src.utils.password_manager import PasswordManager
 
-from src.dataaccess.entity.user_entity import User as UserEntity
-from src.model.user import User as UserModel
-from src.dataaccess.entity.city_entity import City as CityEntity
-from src.model.city import City as CityModel
+from src.dataaccess.entity.user_entity import UserEntity
+from src.model.user_model import UserModel
+from src.dataaccess.entity.city_entity import CityEntity
+from src.model.city_model import CityModel
 
 
 class TestUserIntegration:
@@ -20,7 +20,7 @@ class TestUserIntegration:
 
     def test_register_from_repository(self, temp_folder):
         city = CityEntity(1, "Bruxelles", "1000")
-        user = UserEntity(1, "test@test.be", "password", city, True)
+        user = UserEntity(1, "test@test.be", "password", city)
 
         user_repository = UserRepository(temp_folder)
         result = user_repository.register(
@@ -35,9 +35,9 @@ class TestUserIntegration:
         assert result.city.postal_code == user.city.postal_code
         assert result.is_tenant == user.is_tenant
 
-    def disabled_test_register_from_dao(self, temp_folder):
+    def test_register_from_dao(self, temp_folder):
         city = CityModel(1, "Bruxelles", "1000")
-        user = UserModel(1, "test@test.be", "password", city, True)
+        user = UserModel(1, "test@test.be", "password", city)
 
         user_dao = UserDAO(temp_folder)
         result = user_dao.register(

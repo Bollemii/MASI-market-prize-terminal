@@ -4,6 +4,7 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
+        exclude: "requirements.txt"
       - id: debug-statements
       - id: fix-encoding-pragma
         args: ["--remove"]
@@ -12,6 +13,7 @@ repos:
       - id: check-merge-conflict
       - id: mixed-line-ending
         args: ["--fix=lf"]
+        exclude: "requirements.txt"
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 23.9.1
     hooks:
