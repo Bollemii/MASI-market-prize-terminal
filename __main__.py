@@ -1,4 +1,5 @@
 from src.views.animation import Slot
+import random
 
 
 if __name__ == "__main__":
@@ -7,5 +8,6 @@ if __name__ == "__main__":
     while True:
         input("Press enter to stop: ")
         break
-    slot.stop(is_win=False)
+    win = random.choice([True, False])
+    slot.stop(win)
     slot.join()
