@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from src.dataaccess.entity.tombola_entity import TombolaEntity
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 
@@ -7,7 +6,6 @@ from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 class TombolaRepository(SqliteRepository):
     def __init__(self, base_path: str):
         super().__init__(base_path)
-
         self.execute_create_table(
             """
             CREATE TABLE IF NOT EXISTS tombola (

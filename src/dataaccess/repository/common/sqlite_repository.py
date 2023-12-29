@@ -32,6 +32,9 @@ class SqliteRepository:
             not statement.startswith("INSERT")
             and not statement.startswith("UPDATE")
             and not statement.startswith("DELETE")
+            and not statement.startswith("BEGIN")
+            and not statement.startswith("COMMIT")
+            and not statement.startswith("ROLLBACK")
         ):
             raise Exception("Statement must start with INSERT, UPDATE or DELETE")
 
@@ -39,7 +42,12 @@ class SqliteRepository:
         self.db_connection = self.singleton_database.get_connection()
         self.db_cursor = self.singleton_database.get_cursor()
 
-        if not statement.startswith("DELETE"):
+        if (
+            not statement.startswith("DELETE")
+            and not statement.startswith("BEGIN")
+            and not statement.startswith("COMMIT")
+            and not statement.startswith("ROLLBACK")
+        ):
             if statement.endswith(";"):
                 statement = statement[:-1]
             statement += " RETURNING *;"
