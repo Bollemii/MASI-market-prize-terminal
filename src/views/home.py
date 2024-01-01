@@ -1,6 +1,5 @@
 from src.views.menu import Menu
 from src.views.register import Register
-from src.views.exemple import Exemple
 from src.views.create_tombola import CreateTombola
 from consolemenu.items import FunctionItem, SubmenuItem
 from src.controllers.register_controller import RegisterController
@@ -31,7 +30,7 @@ class Home(Menu):
             if self.user_connected.is_tenant:
                 self.append_item(self.create_tombola_item)
             else:
-                self.append_item(SubmenuItem("Déposer un ticket", Exemple()))
+                self.append_item(self.create_tombola_item)
 
         super().draw()
         
