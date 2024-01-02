@@ -7,6 +7,7 @@ from src.controllers.create_tombola_controller import CreateTombolaController
 from src.controllers.get_ticket_controller import GetTicketController
 from src.views.home import Home
 
+
 class Application:
     @staticmethod
     def run():
@@ -17,7 +18,7 @@ class Application:
             ConnectionController(base_path),
             CreateTombolaController(base_path),
             PlayTicketController(base_path),
-            GetTicketController(base_path)
+            GetTicketController(base_path),
         ).show()
 
     @staticmethod

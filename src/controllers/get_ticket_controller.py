@@ -1,5 +1,7 @@
 from src.dataaccess.dao.ticket_dao import TicketDAO
 from src.model.ticket_model import TicketModel
+
+
 class GetTicketController:
     def __init__(self, base_path: str):
         self.ticket_dao = TicketDAO(base_path)

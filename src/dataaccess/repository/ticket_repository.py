@@ -70,7 +70,12 @@ class TicketRepository(SqliteRepository):
             raise Exception("Ticket not created")
         code, tombola_id, user_id, prize_id = result[0]
         return self.create_entity(code, tombola_id, prize_id, user_id)
-    
+
     def get_by_tombola(self, tombola_id: int) -> [TicketEntity]:
-        result = self.execute_query("""SELECT * FROM ticket WHERE tombola_id = ?""", (tombola_id,))
-        return [self.create_entity(code, tombola_id, prize_id, user_id) for code, tombola_id, user_id, prize_id in result]
+        result = self.execute_query(
+            """SELECT * FROM ticket WHERE tombola_id = ?""", (tombola_id,)
+        )
+        return [
+            self.create_entity(code, tombola_id, prize_id, user_id)
+            for code, tombola_id, user_id, prize_id in result
+        ]

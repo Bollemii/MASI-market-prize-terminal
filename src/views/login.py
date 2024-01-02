@@ -1,9 +1,10 @@
 from src.views.menu import Form
 from getpass import getpass
 from src.controllers.connection_controller import ConnectionController
-class Login(Form):
 
-    def __init__(self, parent_menu,connection_controller: ConnectionController):
+
+class Login(Form):
+    def __init__(self, parent_menu, connection_controller: ConnectionController):
         super().__init__(parent_menu)
         self.connection_controller = connection_controller
 
@@ -17,4 +18,3 @@ class Login(Form):
         else:
             input("Erreur lors de la connexion, appuyez sur entrée pour continuer")
         return user
-

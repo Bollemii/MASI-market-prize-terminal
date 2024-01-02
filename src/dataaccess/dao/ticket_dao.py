@@ -53,4 +53,6 @@ class TicketDAO:
 
     def get_by_tombola(self, tombola_id: int) -> [TicketModel]:
         entities = self.ticket_repository.get_by_tombola(tombola_id)
-        return [self.convert_ticket_entity_to_ticket_model(entity) for entity in entities]
+        return [
+            self.convert_ticket_entity_to_ticket_model(entity) for entity in entities
+        ]

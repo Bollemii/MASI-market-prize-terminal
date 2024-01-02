@@ -4,8 +4,12 @@ from src.model.user_model import UserModel
 from src.views.animation import Slot
 from src.utils.uuid_validator import uuid_validator
 from time import sleep
+
+
 class PlayTicket(Form):
-    def __init__(self, parent_menu, play_ticket_controller: PlayTicketController, user: UserModel):
+    def __init__(
+        self, parent_menu, play_ticket_controller: PlayTicketController, user: UserModel
+    ):
         super().__init__(parent_menu)
         self.play_ticket_controller = play_ticket_controller
         self.user = user
