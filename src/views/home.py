@@ -5,6 +5,8 @@ from consolemenu.items import FunctionItem, SubmenuItem
 from src.controllers.register_controller import RegisterController
 from src.controllers.connection_controller import ConnectionController
 from src.controllers.create_tombola_controller import CreateTombolaController
+from src.views.play_ticket import PlayTicket
+from src.controllers.play_ticket_controller import PlayTicketController
 from src.views.login import Login
 
 class Home(Menu):
@@ -15,6 +17,7 @@ class Home(Menu):
         self.register_item = FunctionItem("S'enregistrer", Register(self, register_controller).execute)
         self.login_item = FunctionItem("Se connecter", Login(self, connection_controller).execute)
         self.create_tombola_item = FunctionItem("Créer une tombola", CreateTombola(self, create_tombola_controller).execute)
+        self.play_ticket_item = FunctionItem("Jouer un ticket", PlayTicket(self, PlayTicketController("data"), None).execute)
     
     def draw(self):
         if self.user_connected is None:
@@ -30,7 +33,8 @@ class Home(Menu):
             if self.user_connected.is_tenant:
                 self.append_item(self.create_tombola_item)
             else:
-                self.append_item(self.create_tombola_item)
+                self.play_ticket_item = FunctionItem("Jouer un ticket", PlayTicket(self, PlayTicketController("data"),self.user_connected).execute)
+                self.append_item(self.play_ticket_item)
 
         super().draw()
         
