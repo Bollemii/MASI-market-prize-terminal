@@ -4,6 +4,8 @@ from src.dataaccess.entity.prize_entity import PrizeEntity
 
 
 class IPrizeRepository(ABC):
+    """Interface for PrizeRepository"""
+
     @abstractmethod
     def get_by_id(self, id: int) -> PrizeEntity | None:
         """Get prize by id"""

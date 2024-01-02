@@ -5,6 +5,8 @@ from src.dataaccess.entity.tombola_entity import TombolaEntity
 
 
 class ITombolaRepository(ABC):
+    """Interface for TombolaRepository"""
+
     @abstractmethod
     def get_by_id(self, id: int) -> TombolaEntity | None:
         """Get tombola by id"""

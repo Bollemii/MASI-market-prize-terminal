@@ -4,6 +4,8 @@ from src.dataaccess.repository.icity_repository import ICityRepository
 
 
 class CityRepository(SqliteRepository, ICityRepository):
+    """Repository for City"""
+
     def __init__(self, base_path: str):
         super().__init__(base_path)
         self.execute_create_table(

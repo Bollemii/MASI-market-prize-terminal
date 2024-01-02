@@ -7,6 +7,8 @@ from src.dataaccess.entity.user_entity import UserEntity
 
 
 class UserRepository(SqliteRepository, IUserRepository):
+    """Repository for User"""
+
     def __init__(self, base_path: str):
         super().__init__(base_path)
 
@@ -42,7 +44,7 @@ class UserRepository(SqliteRepository, IUserRepository):
         id, email, password, city_id, is_tenant, _, _ = result[0]
         return self._create_entity(id, email, password, city_id, is_tenant)
 
-    def update(self, id: int, email: str, password: str):
+    def update(self, id: int, email: str, password: str) -> UserEntity:
         result = self.execute_statement(
             "UPDATE user SET email = ?, password = ? WHERE id = ?",
             (email, self.password_manager.encrypt_password(password), id),

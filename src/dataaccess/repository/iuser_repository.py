@@ -4,12 +4,14 @@ from src.dataaccess.entity.user_entity import UserEntity
 
 
 class IUserRepository(ABC):
+    """Interface for UserRepository"""
+
     @abstractmethod
     def get_by_id(self, id: int) -> UserEntity | None:
         """Get user by id"""
 
     @abstractmethod
-    def update(self, id: int, email: str, password: str):
+    def update(self, id: int, email: str, password: str) -> UserEntity:
         """Update a user"""
 
     @abstractmethod

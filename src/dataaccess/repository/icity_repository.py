@@ -4,6 +4,8 @@ from src.dataaccess.entity.city_entity import CityEntity
 
 
 class ICityRepository(ABC):
+    """Interface for CityRepository"""
+
     @abstractmethod
     def get_by_id(self, id: int) -> CityEntity | None:
         """Get city by id"""

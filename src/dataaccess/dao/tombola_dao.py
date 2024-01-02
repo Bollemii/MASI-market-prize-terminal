@@ -1,20 +1,23 @@
 from datetime import datetime
+from src.dataaccess.dao.itombola_dao import ITombolaDAO
 
 from src.dataaccess.entity.tombola_entity import TombolaEntity
-from src.dataaccess.repository.tombola_repository import TombolaRepository
-from src.dataaccess.repository.ticket_repository import TicketRepository
-from src.dataaccess.repository.prize_repository import PrizeRepository
+from src.dataaccess.repository.itombola_repository import ITombolaRepository
+from src.dataaccess.repository.iticket_repository import ITicketRepository
+from src.dataaccess.repository.iprize_repository import IPrizeRepository
 from src.model.tombola_model import TombolaModel
 from src.model.prize_model import PrizeModel
 from src.utils.uuid_manager import UUIDManager
 
 
-class TombolaDAO:
+class TombolaDAO(ITombolaDAO):
+    """Tombola DAO"""
+
     def __init__(
         self,
-        tombola_repository: TombolaRepository,
-        prize_repository: PrizeRepository,
-        ticket_repository: TicketRepository,
+        tombola_repository: ITombolaRepository,
+        prize_repository: IPrizeRepository,
+        ticket_repository: ITicketRepository,
         uuid_manager: UUIDManager,
     ):
         self.tombola_repository = tombola_repository
@@ -22,7 +25,7 @@ class TombolaDAO:
         self.ticket_repository = ticket_repository
         self.uuid_manager = uuid_manager
 
-    def _convert_tombola_entity_to_tombola_model(
+    def convert_tombola_entity_to_tombola_model(
         self, entity: TombolaEntity
     ) -> TombolaModel:
         return TombolaModel(entity.id, entity.start_date, entity.end_date)
@@ -31,11 +34,11 @@ class TombolaDAO:
         result = self.tombola_repository.get_current_tombola(datetime.now())
         if not result:
             return None
-        return self._convert_tombola_entity_to_tombola_model(result)
+        return self.convert_tombola_entity_to_tombola_model(result)
 
     def create(self, start_date: datetime, end_date: datetime) -> TombolaModel:
         entity = self.tombola_repository.create(start_date, end_date)
-        return self._convert_tombola_entity_to_tombola_model(entity)
+        return self.convert_tombola_entity_to_tombola_model(entity)
 
     def create_tombola_with_prize(
         self,
@@ -66,4 +69,4 @@ class TombolaDAO:
         tombola_entity = self.tombola_repository.get_by_id(tombola_entity.id)
         if tombola_entity is None:
             raise Exception("The tombola was not created")
-        return self._convert_tombola_entity_to_tombola_model(tombola_entity)
+        return self.convert_tombola_entity_to_tombola_model(tombola_entity)

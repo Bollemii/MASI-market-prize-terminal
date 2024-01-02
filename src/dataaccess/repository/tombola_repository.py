@@ -6,6 +6,8 @@ from src.dataaccess.repository.itombola_repository import ITombolaRepository
 
 
 class TombolaRepository(SqliteRepository, ITombolaRepository):
+    """Tombola repository"""
+
     def __init__(self, base_path: str):
         super().__init__(base_path)
         self.execute_create_table(

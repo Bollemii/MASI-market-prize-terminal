@@ -1,10 +1,10 @@
-from src.dataaccess.dao.user_dao import UserDAO
+from src.dataaccess.dao.iuser_dao import IUserDAO
 from src.exception.password_exception import PasswordException
 from src.model.user_model import UserModel
 
 
 class RegisterController:
-    def __init__(self, user_dao: UserDAO):
+    def __init__(self, user_dao: IUserDAO):
         self.user_dao = user_dao
 
     def register(

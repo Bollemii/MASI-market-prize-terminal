@@ -1,12 +1,12 @@
-from src.dataaccess.dao.ticket_dao import TicketDAO
-from src.dataaccess.dao.prize_dao import PrizeDAO
+from src.dataaccess.dao.iticket_dao import ITicketDAO
+from src.dataaccess.dao.iprize_dao import IPrizeDAO
 from src.exception.ticket_not_found_exception import TicketNotFoundException
 from src.model.ticket_model import TicketModel
 from src.model.user_model import UserModel
 
 
 class PlayTicketController:
-    def __init__(self, ticket_dao: TicketDAO, prize_dao: PrizeDAO):
+    def __init__(self, ticket_dao: ITicketDAO, prize_dao: IPrizeDAO):
         self.ticket_dao = ticket_dao
         self.prize_dao = prize_dao
 

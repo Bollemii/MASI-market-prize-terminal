@@ -9,6 +9,8 @@ from src.dataaccess.repository.iticket_repository import ITicketRepository
 
 
 class TicketRepository(SqliteRepository, ITicketRepository):
+    """Ticket repository"""
+
     def __init__(self, base_path: str):
         super().__init__(base_path)
         self.tombola_repository = TombolaRepository(base_path)

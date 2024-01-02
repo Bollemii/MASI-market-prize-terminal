@@ -4,10 +4,13 @@ from src.config.singleton_database import SingletonDatabase
 
 
 class SqliteRepository:
+    """Repository for Sqlite"""
+
     def __init__(self, base_path: str):
         self.base_path = base_path
 
     def query_cleaner(self, query: str) -> str:
+        """Clean query"""
         query = query.strip()
         query = query.replace("\n", " ")
         query = query.replace("\t", " ")
@@ -15,6 +18,7 @@ class SqliteRepository:
         return query
 
     def execute_create_table(self, statement: str) -> None:
+        """Execute create table statement"""
         statement = self.query_cleaner(statement)
         if not statement.startswith("CREATE TABLE"):
             raise Exception("Statement must start with CREATE TABLE")
@@ -27,6 +31,7 @@ class SqliteRepository:
         self.db_connection.commit()
 
     def execute_statement(self, statement: str, params: tuple = ()) -> list | None:
+        """Execute statement"""
         statement = self.query_cleaner(statement)
         if (
             not statement.startswith("INSERT")
@@ -65,6 +70,7 @@ class SqliteRepository:
         return result
 
     def execute_query(self, query: str, params: tuple = ()) -> list:
+        """Execute query and"""
         query = self.query_cleaner(query)
         if not query.startswith("SELECT"):
             raise Exception("Query must start with SELECT")

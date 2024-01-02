@@ -4,6 +4,8 @@ from src.dataaccess.entity.ticket_entity import TicketEntity
 
 
 class ITicketRepository(ABC):
+    """Interface for TicketRepository"""
+
     @abstractmethod
     def get_by_code(self, code: str) -> TicketEntity | None:
         """Get ticket by code"""

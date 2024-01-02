@@ -5,6 +5,8 @@ from src.dataaccess.repository.iprize_repository import IPrizeRepository
 
 
 class PrizeRepository(SqliteRepository, IPrizeRepository):
+    """Repository for Prize"""
+
     def __init__(self, base_path: str):
         super().__init__(base_path)
         self.tombola_repository = TombolaRepository(base_path)
