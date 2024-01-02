@@ -1,4 +1,4 @@
-from src.views.menu import Form
+from src.views.generics.menu import Form
 from getpass import getpass
 from src.controllers.connection_controller import ConnectionController
 
@@ -10,11 +10,14 @@ class Login(Form):
 
     def execute(self):
         print("Formulaire de connexion")
-        email = self._prompt_user("Entrez votre email : ")
+        email = self._prompt_user("Entrez votre email : ", enable_quit=True)
         password = getpass("Entrez votre mot de passe : ")
+
         user = self.connection_controller.connection(email, password)
+
         if user is not None:
             input("Vous êtes bien connecté, appuyez sur entrée pour continuer")
         else:
             input("Erreur lors de la connexion, appuyez sur entrée pour continuer")
+
         return user

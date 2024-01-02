@@ -1,5 +1,4 @@
 from datetime import datetime
-from uuid import uuid4
 
 from src.dataaccess.entity.prize_entity import PrizeEntity
 from src.dataaccess.entity.tombola_entity import TombolaEntity
@@ -8,6 +7,7 @@ from src.dataaccess.repository.ticket_repository import TicketRepository
 from src.dataaccess.repository.prize_repository import PrizeRepository
 from src.model.tombola_model import TombolaModel
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
+from src.utils.uuid_manager import UUIDManager
 
 
 class TombolaDAO:
@@ -16,6 +16,7 @@ class TombolaDAO:
         self.sqlite_repository = SqliteRepository(base_path)
         self.prize_repository = PrizeRepository(base_path)
         self.ticket_repository = TicketRepository(base_path)
+        self.uuid_manager = UUIDManager()
 
     def convert_tombola_entity_to_tombola_model(
         self, entity: TombolaEntity
@@ -47,9 +48,13 @@ class TombolaDAO:
                         entity.id, prize.description, prize.nb_available
                     )
                 for i in range(prize.nb_available):
-                    self.ticket_repository.create(str(uuid4()), entity.id, prize.id)
+                    self.ticket_repository.create(
+                        self.uuid_manager.generate(), entity.id, prize.id
+                    )
             for i in range(nb_lose):
-                self.ticket_repository.create(str(uuid4()), entity.id, None)
+                self.ticket_repository.create(
+                    self.uuid_manager.generate(), entity.id, None
+                )
         except Exception as e:
             raise e
         return self.convert_tombola_entity_to_tombola_model(entity)

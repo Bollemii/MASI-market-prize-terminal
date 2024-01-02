@@ -23,5 +23,4 @@ class Application:
 
     @staticmethod
     def _prepare(base_path: str):
-        print("Prepare")
         os.makedirs(base_path, exist_ok=True)

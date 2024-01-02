@@ -1,9 +1,9 @@
 from consolemenu import ConsoleMenu, PromptUtils
-from consolemenu.items import FunctionItem, SubmenuItem
 from datetime import datetime
+from abc import ABC, abstractmethod
 
 
-class Form:
+class Form(ABC):
     """A form is a screen that allows the user to enter some data"""
 
     def __init__(self, parent_menu: ConsoleMenu):
@@ -39,10 +39,6 @@ class Form:
             return self._get_date(message)
         return date
 
-
-class Menu(ConsoleMenu):
-    def add_form(self, text, form: Form) -> FunctionItem:
-        self.append_item(FunctionItem(text, form.execute, menu=self))
-
-    def add_submenu(self, text, submenu: ConsoleMenu):
-        self.append_item(SubmenuItem(text, submenu, menu=self))
+    @abstractmethod
+    def execute(self):
+        """Execute the form and return the result"""

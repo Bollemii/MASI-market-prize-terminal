@@ -1,20 +1,8 @@
-from threading import Thread, Event
 from random import choice
 from time import sleep
-from os import system, name
+import os
 
-
-class StopAbleThread(Thread):
-    def __init__(self):
-        super().__init__()
-        self._stop_event = Event()
-
-    def stop(self, is_win=False):
-        self.is_win = is_win
-        self._stop_event.set()
-
-    def is_stopped(self):
-        return self._stop_event.is_set()
+from src.views.animation.stop_able_thread import StopAbleThread
 
 
 class Slot(StopAbleThread):
@@ -72,13 +60,14 @@ class Slot(StopAbleThread):
         return choice(self.fruits)
 
     def clear(self):
-        if name == "nt":
-            _ = system("cls")
+        if os.name == "nt":
+            os.system("cls")
         else:
-            _ = system("clear")
+            os.system("clear")
 
     def display(self):
         self.clear()
+
         print("Slot machine")
         print("--------------------------------------------------------")
         print("To win, you need to get 3 equal fruits in the middle row")
