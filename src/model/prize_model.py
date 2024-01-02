@@ -4,11 +4,11 @@ from src.model.tombola_model import TombolaModel
 class PrizeModel:
     def __init__(
         self,
-        id: int,
-        tombola: TombolaModel,
+        id: int | None,
+        tombola: TombolaModel | None,
         description: str,
         nb_available: int,
-        nb_won: int,
+        nb_won: int = 0,
     ):
         self.id = id
         self.tombola = tombola

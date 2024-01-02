@@ -1,3 +1,4 @@
+from src.exception.password_exception import PasswordException
 from src.utils.password_manager import PasswordManager
 from src.dataaccess.repository.city_repository import CityRepository
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
@@ -51,13 +52,16 @@ class UserRepository(SqliteRepository):
         return self.create_entity(id, email, password, city_id, is_tenant)
 
     def connection(self, email: str, password: str) -> UserEntity | None:
+        email = email.lower()
         result = self.execute_query(
-            "SELECT * FROM user WHERE email = ? AND password = ?",
-            (email, self.password_manager.encrypt_password(password)),
+            "SELECT * FROM user WHERE email = ?",
+            (email,),
         )
         if len(result) == 0:
             return None
-        id, email, password, city_id, is_tenant, _, _ = result[0]
+        id, email, encrypted_password, city_id, is_tenant, _, _ = result[0]
+        if not self.password_manager.check_password(password, encrypted_password):
+            raise PasswordException("Password is incorrect")
         return self.create_entity(id, email, password, city_id, is_tenant)
 
     def register(
@@ -66,7 +70,7 @@ class UserRepository(SqliteRepository):
         city = self.city_repository.get_by_name_and_postal_code(city_name, postal_code)
         if city is None:
             city = self.city_repository.create(city_name, postal_code)
-
+        email = email.lower()
         result = self.execute_statement(
             "INSERT INTO user (email, password, city_id) VALUES (?, ?, ?)",
             (email, self.password_manager.encrypt_password(password), city.id),

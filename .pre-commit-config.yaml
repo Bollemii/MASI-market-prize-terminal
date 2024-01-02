@@ -34,9 +34,3 @@ repos:
         language: system
         pass_filenames: false
         stages: [commit]
-      - id: git
-        name: git
-        entry: "git add ."
-        language: system
-        pass_filenames: false
-        stages: [commit]

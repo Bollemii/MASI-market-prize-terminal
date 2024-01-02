@@ -3,6 +3,8 @@ from src.dataaccess.repository.tombola_repository import TombolaRepository
 from src.dataaccess.repository.user_repository import UserRepository
 from src.dataaccess.repository.prize_repository import PrizeRepository
 from src.dataaccess.entity.ticket_entity import TicketEntity
+from src.exception.ticket_not_found_exception import TicketNotFoundException
+from src.exception.tombola_not_found_exception import TombolaNotFoundException
 
 
 class TicketRepository(SqliteRepository):
@@ -31,7 +33,7 @@ class TicketRepository(SqliteRepository):
     ) -> TicketEntity:
         tombola = self.tombola_repository.get_by_id(tombola_id)
         if tombola is None:
-            raise Exception("Tombola not found")
+            raise TombolaNotFoundException()
         user = self.user_repository.get_by_id(user_id) if user_id else None
         prize = self.prize_repository.get_by_id(prize_id) if prize_id else None
         return TicketEntity(code, tombola, prize, user)
@@ -48,7 +50,7 @@ class TicketRepository(SqliteRepository):
             """UPDATE ticket SET user_id = ? WHERE code = ?""", (user_id, code)
         )
         if result is None or len(result) == 0:
-            raise Exception("Ticket not updated")
+            raise TicketNotFoundException()
         code, tombola_id, user_id, prize_id = result[0]
         return self.create_entity(code, tombola_id, prize_id, user_id)
 
@@ -57,7 +59,7 @@ class TicketRepository(SqliteRepository):
             """UPDATE ticket SET prize_id = ? WHERE code = ?""", (prize_id, code)
         )
         if result is None or len(result) == 0:
-            raise Exception("Ticket not updated")
+            raise TicketNotFoundException()
         code, tombola_id, user_id, prize_id = result[0]
         return self.create_entity(code, tombola_id, prize_id, user_id)
 
@@ -70,3 +72,12 @@ class TicketRepository(SqliteRepository):
             raise Exception("Ticket not created")
         code, tombola_id, user_id, prize_id = result[0]
         return self.create_entity(code, tombola_id, prize_id, user_id)
+
+    def get_by_tombola(self, tombola_id: int) -> list[TicketEntity]:
+        result = self.execute_query(
+            """SELECT * FROM ticket WHERE tombola_id = ?""", (tombola_id,)
+        )
+        return [
+            self.create_entity(code, tombola_id, prize_id, user_id)
+            for code, tombola_id, user_id, prize_id in result
+        ]

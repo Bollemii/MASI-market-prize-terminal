@@ -1,7 +1,8 @@
-from src.dataaccess.repository.user_repository import UserRepository
-from src.dataaccess.entity.user_entity import UserEntity
 from src.model.user_model import UserModel
+from src.dataaccess.entity.user_entity import UserEntity
+from src.dataaccess.repository.user_repository import UserRepository
 from src.dataaccess.dao.city_dao import CityDAO
+from src.exception.user_not_found_exception import UserNotFoundException
 
 
 class UserDAO:
@@ -18,10 +19,10 @@ class UserDAO:
             entity.is_tenant,
         )
 
-    def connection(self, email: str, password: str) -> UserModel | None:
+    def connection(self, email: str, password: str) -> UserModel:
         entity = self.user_repository.connection(email, password)
         if entity is None:
-            return None
+            raise UserNotFoundException()
         return self.convert_user_entity_to_user_model(entity)
 
     def register(
