@@ -6,21 +6,21 @@ from src.views.form.register import Register
 from src.views.form.create_tombola import CreateTombola
 from src.views.form.play_ticket import PlayTicket
 from src.views.form.login import Login
-from src.controllers.register_controller import RegisterController
-from src.controllers.connection_controller import ConnectionController
-from src.controllers.create_tombola_controller import CreateTombolaController
-from src.controllers.play_ticket_controller import PlayTicketController
-from src.controllers.get_ticket_controller import GetTicketController
+from src.controllers.iregister_controller import IRegisterController
+from src.controllers.iconnection_controller import IConnectionController
+from src.controllers.icreate_tombola_controller import ICreateTombolaController
+from src.controllers.iplay_ticket_controller import IPlayTicketController
+from src.controllers.iget_ticket_controller import IGetTicketController
 
 
 class Home(Menu):
     def __init__(
         self,
-        register_controller: RegisterController,
-        connection_controller: ConnectionController,
-        create_tombola_controller: CreateTombolaController,
-        play_ticket_controller: PlayTicketController,
-        get_ticket_controller: GetTicketController,
+        register_controller: IRegisterController,
+        connection_controller: IConnectionController,
+        create_tombola_controller: ICreateTombolaController,
+        play_ticket_controller: IPlayTicketController,
+        get_ticket_controller: IGetTicketController,
     ):
         super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
         self.user_connected: UserModel | None = None

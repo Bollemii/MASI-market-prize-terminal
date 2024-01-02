@@ -3,11 +3,11 @@ from getpass import getpass
 
 from src.exception.password_exception import PasswordException
 from src.views.generics.menu import Form
-from src.controllers.register_controller import RegisterController
+from src.controllers.iregister_controller import IRegisterController
 
 
 class Register(Form):
-    def __init__(self, parent_menu, register_controller: RegisterController):
+    def __init__(self, parent_menu, register_controller: IRegisterController):
         super().__init__(parent_menu)
         self.register_controller = register_controller
 

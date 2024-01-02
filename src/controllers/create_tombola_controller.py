@@ -1,11 +1,12 @@
 from datetime import datetime
 
+from src.controllers.icreate_tombola_controller import ICreateTombolaController
 from src.dataaccess.dao.itombola_dao import ITombolaDAO
 from src.model.prize_model import PrizeModel
 from src.model.tombola_model import TombolaModel
 
 
-class CreateTombolaController:
+class CreateTombolaController(ICreateTombolaController):
     def __init__(self, tombola_dao: ITombolaDAO):
         self.tombola_dao = tombola_dao
 

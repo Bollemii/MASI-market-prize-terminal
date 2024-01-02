@@ -1,8 +1,9 @@
+from src.controllers.iget_ticket_controller import IGetTicketController
 from src.dataaccess.dao.iticket_dao import ITicketDAO
 from src.model.ticket_model import TicketModel
 
 
-class GetTicketController:
+class GetTicketController(IGetTicketController):
     def __init__(self, ticket_dao: ITicketDAO):
         self.ticket_dao = ticket_dao
 

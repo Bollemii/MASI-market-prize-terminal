@@ -2,15 +2,18 @@ from consolemenu.prompt_utils import UserQuit
 from time import sleep
 
 from src.views.generics.menu import Form
-from src.controllers.play_ticket_controller import PlayTicketController
-from src.model.user_model import UserModel
 from src.views.animation.animation import Slot
+from src.controllers.iplay_ticket_controller import IPlayTicketController
+from src.model.user_model import UserModel
 from src.utils.uuid_manager import UUIDManager
 
 
 class PlayTicket(Form):
     def __init__(
-        self, parent_menu, play_ticket_controller: PlayTicketController, user: UserModel
+        self,
+        parent_menu,
+        play_ticket_controller: IPlayTicketController,
+        user: UserModel,
     ):
         super().__init__(parent_menu)
         self.play_ticket_controller = play_ticket_controller

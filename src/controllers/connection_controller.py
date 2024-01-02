@@ -1,8 +1,9 @@
+from src.controllers.iconnection_controller import IConnectionController
 from src.dataaccess.dao.iuser_dao import IUserDAO
 from src.model.user_model import UserModel
 
 
-class ConnectionController:
+class ConnectionController(IConnectionController):
     def __init__(self, user_dao: IUserDAO):
         self.user_dao = user_dao
 
