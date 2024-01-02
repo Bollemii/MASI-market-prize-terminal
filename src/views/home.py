@@ -10,6 +10,7 @@ from src.controllers.register_controller import RegisterController
 from src.controllers.connection_controller import ConnectionController
 from src.controllers.create_tombola_controller import CreateTombolaController
 from src.controllers.play_ticket_controller import PlayTicketController
+from src.controllers.get_ticket_controller import GetTicketController
 
 
 class Home(Menu):
@@ -19,7 +20,7 @@ class Home(Menu):
         connection_controller: ConnectionController,
         create_tombola_controller: CreateTombolaController,
         play_ticket_controller: PlayTicketController,
-        get_ticket_controller,
+        get_ticket_controller: GetTicketController,
     ):
         super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
         self.user_connected: UserModel | None = None

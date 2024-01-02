@@ -6,9 +6,9 @@ from src.model.user_model import UserModel
 
 
 class PlayTicketController:
-    def __init__(self, base_path: str):
-        self.ticket_dao = TicketDAO(base_path)
-        self.prize_dao = PrizeDAO(base_path)
+    def __init__(self, ticket_dao: TicketDAO, prize_dao: PrizeDAO):
+        self.ticket_dao = ticket_dao
+        self.prize_dao = prize_dao
 
     def play_ticket(self, code: str, user: UserModel) -> TicketModel:
         ticket = self.ticket_dao.get_by_code(code)

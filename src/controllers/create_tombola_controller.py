@@ -6,8 +6,8 @@ from src.model.tombola_model import TombolaModel
 
 
 class CreateTombolaController:
-    def __init__(self, base_path: str):
-        self.tombola_dao = TombolaDAO(base_path)
+    def __init__(self, tombola_dao: TombolaDAO):
+        self.tombola_dao = tombola_dao
 
     def create_tombola(
         self,

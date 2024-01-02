@@ -15,4 +15,4 @@ def _stop_handler(signal, frame):
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, _stop_handler)
 
-    Application.run()
+    Application().run()
