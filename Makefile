@@ -13,3 +13,6 @@ pre-run:
 pre-install:
 	- pip install pre-commit
 	- pre-commit install
+
+tests:
+	- pytest .
