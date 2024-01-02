@@ -43,6 +43,9 @@ class Home(Menu):
             "Jouer un ticket", PlayTicket(self, play_ticket_controller, None).execute
         )
 
+    def logout(self):
+        self.user_connected = None
+
     def draw(self):
         if self.user_connected is None:
             self.user_connected = (
@@ -51,6 +54,10 @@ class Home(Menu):
             if self.user_connected is not None:
                 self.register_item = FunctionItem(
                     "S'enregistrer", Register(self, self.register_controller).execute
+                )
+                self.login_item = FunctionItem(
+                    "Se connecter",
+                    Login(self, self.connection_controller).execute,
                 )
         self.items.clear()
         if self.user_connected is None:
@@ -68,5 +75,6 @@ class Home(Menu):
                     ).execute,
                 )
                 self.append_item(self.play_ticket_item)
+            self.append_item(FunctionItem("Se déconnecter", self.logout))
 
         super().draw()
