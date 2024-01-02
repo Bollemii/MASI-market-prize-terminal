@@ -1,0 +1,10 @@
+.gitignore
+.venv
+.git
+.gitlab-ci.yml
+.flake8
+.pylintrc
+.pytest_cache
+LICENSE
+pre-commit-adapt.sh
+README.md
