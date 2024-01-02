@@ -5,7 +5,7 @@ from src.views.generics.menu import Form
 from src.views.animation.animation import Slot
 from src.controllers.iplay_ticket_controller import IPlayTicketController
 from src.model.user_model import UserModel
-from src.utils.uuid_manager import UUIDManager
+from src.utils.iuuid_manager import IUUIDManager
 
 
 class PlayTicket(Form):
@@ -14,10 +14,11 @@ class PlayTicket(Form):
         parent_menu,
         play_ticket_controller: IPlayTicketController,
         user: UserModel,
+        uuid_manager: IUUIDManager,
     ):
         super().__init__(parent_menu)
         self.play_ticket_controller = play_ticket_controller
-        self.uuid_manager = UUIDManager()
+        self.uuid_manager = uuid_manager
         self.user = user
         self.slot = Slot()
 
@@ -27,7 +28,7 @@ class PlayTicket(Form):
                 "Entrez le code de votre ticket", enable_quit=True
             )
 
-            if not self.uuid_manager.validate(ticket_code):
+            if not self.uuid_manager.is_uuid(ticket_code):
                 print("Code de ticket invalide")
                 return
 

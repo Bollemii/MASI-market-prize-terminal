@@ -1,15 +1,15 @@
 from src.dataaccess.entity.prize_entity import PrizeEntity
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
-from src.dataaccess.repository.tombola_repository import TombolaRepository
+from src.dataaccess.repository.itombola_repository import ITombolaRepository
 from src.dataaccess.repository.iprize_repository import IPrizeRepository
 
 
 class PrizeRepository(SqliteRepository, IPrizeRepository):
     """Repository for Prize"""
 
-    def __init__(self, base_path: str):
+    def __init__(self, base_path: str, tombola_repository: ITombolaRepository):
         super().__init__(base_path)
-        self.tombola_repository = TombolaRepository(base_path)
+        self.tombola_repository = tombola_repository
 
         self.execute_create_table(
             """

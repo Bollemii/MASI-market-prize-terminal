@@ -1,7 +1,7 @@
 from src.dataaccess.repository.iuser_repository import IUserRepository
 from src.exception.password_exception import PasswordException
-from src.utils.password_manager import PasswordManager
-from src.dataaccess.repository.city_repository import CityRepository
+from src.utils.ipassword_manager import IPasswordManager
+from src.dataaccess.repository.icity_repository import ICityRepository
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 from src.dataaccess.entity.user_entity import UserEntity
 
@@ -9,11 +9,16 @@ from src.dataaccess.entity.user_entity import UserEntity
 class UserRepository(SqliteRepository, IUserRepository):
     """Repository for User"""
 
-    def __init__(self, base_path: str):
+    def __init__(
+        self,
+        base_path: str,
+        city_repository: ICityRepository,
+        password_manager: IPasswordManager,
+    ):
         super().__init__(base_path)
 
-        self.password_manager = PasswordManager()
-        self.city_repository = CityRepository(base_path)
+        self.city_repository = city_repository
+        self.password_manager = password_manager
 
         self.execute_create_table(
             """

@@ -1,7 +1,7 @@
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
-from src.dataaccess.repository.tombola_repository import TombolaRepository
-from src.dataaccess.repository.user_repository import UserRepository
-from src.dataaccess.repository.prize_repository import PrizeRepository
+from src.dataaccess.repository.itombola_repository import ITombolaRepository
+from src.dataaccess.repository.iuser_repository import IUserRepository
+from src.dataaccess.repository.iprize_repository import IPrizeRepository
 from src.dataaccess.entity.ticket_entity import TicketEntity
 from src.exception.ticket_not_found_exception import TicketNotFoundException
 from src.exception.tombola_not_found_exception import TombolaNotFoundException
@@ -11,11 +11,17 @@ from src.dataaccess.repository.iticket_repository import ITicketRepository
 class TicketRepository(SqliteRepository, ITicketRepository):
     """Ticket repository"""
 
-    def __init__(self, base_path: str):
+    def __init__(
+        self,
+        base_path: str,
+        tombola_repository: ITombolaRepository,
+        user_repository: IUserRepository,
+        prize_repository: IPrizeRepository,
+    ):
         super().__init__(base_path)
-        self.tombola_repository = TombolaRepository(base_path)
-        self.user_repository = UserRepository(base_path)
-        self.prize_repository = PrizeRepository(base_path)
+        self.tombola_repository = tombola_repository
+        self.user_repository = user_repository
+        self.prize_repository = prize_repository
 
         self.execute_create_table(
             """

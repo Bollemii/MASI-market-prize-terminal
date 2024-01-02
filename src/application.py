@@ -1,6 +1,7 @@
 import os
 
 from src.utils.uuid_manager import UUIDManager
+from src.utils.password_manager import PasswordManager
 from src.dataaccess.repository.city_repository import CityRepository
 from src.dataaccess.repository.prize_repository import PrizeRepository
 from src.dataaccess.repository.tombola_repository import TombolaRepository
@@ -25,12 +26,20 @@ class Application:
         os.makedirs(base_path, exist_ok=True)
 
         self.uuid_manager = UUIDManager()
+        self.password_manager = PasswordManager()
 
         self.city_repository = CityRepository(base_path)
-        self.prize_repository = PrizeRepository(base_path)
         self.tombola_repository = TombolaRepository(base_path)
-        self.ticket_repository = TicketRepository(base_path)
-        self.user_repository = UserRepository(base_path)
+        self.prize_repository = PrizeRepository(base_path, self.tombola_repository)
+        self.user_repository = UserRepository(
+            base_path, self.city_repository, self.password_manager
+        )
+        self.ticket_repository = TicketRepository(
+            base_path,
+            self.tombola_repository,
+            self.user_repository,
+            self.prize_repository,
+        )
 
         self.city_dao = CityDAO(self.city_repository)
         self.tombola_dao = TombolaDAO(
@@ -61,4 +70,5 @@ class Application:
             self.create_tombola_controller,
             self.play_ticket_controller,
             self.get_ticket_controller,
+            self.uuid_manager,
         ).show()

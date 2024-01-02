@@ -7,7 +7,7 @@ from src.dataaccess.repository.iticket_repository import ITicketRepository
 from src.dataaccess.repository.iprize_repository import IPrizeRepository
 from src.model.tombola_model import TombolaModel
 from src.model.prize_model import PrizeModel
-from src.utils.uuid_manager import UUIDManager
+from src.utils.iuuid_manager import IUUIDManager
 
 
 class TombolaDAO(ITombolaDAO):
@@ -18,7 +18,7 @@ class TombolaDAO(ITombolaDAO):
         tombola_repository: ITombolaRepository,
         prize_repository: IPrizeRepository,
         ticket_repository: ITicketRepository,
-        uuid_manager: UUIDManager,
+        uuid_manager: IUUIDManager,
     ):
         self.tombola_repository = tombola_repository
         self.prize_repository = prize_repository

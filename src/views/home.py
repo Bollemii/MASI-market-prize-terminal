@@ -1,6 +1,7 @@
 from consolemenu.items import FunctionItem
 
 from src.model.user_model import UserModel
+from src.utils.iuuid_manager import IUUIDManager
 from src.views.generics.menu import Menu
 from src.views.form.register import Register
 from src.views.form.create_tombola import CreateTombola
@@ -21,6 +22,7 @@ class Home(Menu):
         create_tombola_controller: ICreateTombolaController,
         play_ticket_controller: IPlayTicketController,
         get_ticket_controller: IGetTicketController,
+        uuid_manager: IUUIDManager,
     ):
         super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
         self.user_connected: UserModel | None = None
@@ -29,6 +31,7 @@ class Home(Menu):
         self.create_tombola_controller = create_tombola_controller
         self.play_ticket_controller = play_ticket_controller
         self.get_ticket_controller = get_ticket_controller
+        self.uuid_manager = uuid_manager
 
         self.register_item = FunctionItem(
             "S'enregistrer", Register(self, register_controller).execute
@@ -73,7 +76,10 @@ class Home(Menu):
                 self.play_ticket_item = FunctionItem(
                     "Jouer un ticket",
                     PlayTicket(
-                        self, self.play_ticket_controller, self.user_connected
+                        self,
+                        self.play_ticket_controller,
+                        self.user_connected,
+                        self.uuid_manager,
                     ).execute,
                 )
                 self.append_item(self.play_ticket_item)
