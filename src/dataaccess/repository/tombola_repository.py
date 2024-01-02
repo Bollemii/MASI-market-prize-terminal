@@ -30,17 +30,21 @@ class TombolaRepository(SqliteRepository, ITombolaRepository):
         if len(result) == 0:
             return None
         id, start_date, end_date = result[0]
-        return TombolaEntity(id, start_date, end_date)
+        return TombolaEntity(
+            id, datetime.fromisoformat(start_date), datetime.fromisoformat(end_date)
+        )
 
-    def get_current_tombola(self, current_date: datetime) -> TombolaEntity | None:
+    def get_tombola_by_date(self, date: datetime) -> TombolaEntity | None:
         result = self.execute_query(
             """SELECT id, start_date, end_date FROM tombola WHERE start_date <= ? AND end_date >= ?""",
-            (current_date.isoformat(), current_date.isoformat()),
+            (date.isoformat(), date.isoformat()),
         )
         if len(result) == 0:
             return None
         id, start_date, end_date = result[0]
-        return TombolaEntity(id, start_date, end_date)
+        return TombolaEntity(
+            id, datetime.fromisoformat(start_date), datetime.fromisoformat(end_date)
+        )
 
     def create(self, start_date: datetime, end_date: datetime) -> TombolaEntity:
         result = self.execute_statement(
@@ -49,5 +53,9 @@ class TombolaRepository(SqliteRepository, ITombolaRepository):
         )
         if result is None or len(result) == 0:
             raise Exception("Tombola not created")
-        id, start_date, end_date, _, _ = result[0]
-        return TombolaEntity(id, start_date, end_date)
+        id, start_date_str, end_date_str, _, _ = result[0]
+        return TombolaEntity(
+            id,
+            datetime.fromisoformat(start_date_str),
+            datetime.fromisoformat(end_date_str),
+        )

@@ -1,4 +1,5 @@
 import os
+from src.controllers.get_tombola_state_controller import GetTombolaStateController
 
 from src.utils.uuid_manager import UUIDManager
 from src.utils.password_manager import PasswordManager
@@ -17,6 +18,7 @@ from src.controllers.play_ticket_controller import PlayTicketController
 from src.controllers.register_controller import RegisterController
 from src.controllers.create_tombola_controller import CreateTombolaController
 from src.controllers.get_ticket_controller import GetTicketController
+from src.controllers.get_current_tombola_controller import GetCurrentTombolaController
 from src.views.home import Home
 
 
@@ -63,6 +65,12 @@ class Application:
             self.ticket_dao, self.prize_dao
         )
         self.get_ticket_controller = GetTicketController(self.ticket_dao)
+        self.get_current_tombola_controller = GetCurrentTombolaController(
+            self.tombola_dao
+        )
+        self.get_tombola_state_controller = GetTombolaStateController(
+            self.ticket_dao, self.prize_dao
+        )
 
     def run(self):
         """Run the application"""
@@ -72,5 +80,7 @@ class Application:
             self.create_tombola_controller,
             self.play_ticket_controller,
             self.get_ticket_controller,
+            self.get_current_tombola_controller,
+            self.get_tombola_state_controller,
             self.uuid_manager,
         ).show()

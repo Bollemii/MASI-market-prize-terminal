@@ -14,6 +14,8 @@ class PrizeDAO(IPrizeDAO):
         self.tombola_dao = tombola_dao
 
     def convert_prize_entity_to_prize_model(self, entity: PrizeEntity) -> PrizeModel:
+        if entity.tombola is None:
+            raise PrizeNotFoundException()
         return PrizeModel(
             entity.id,
             self.tombola_dao.convert_tombola_entity_to_tombola_model(entity.tombola),
@@ -31,3 +33,7 @@ class PrizeDAO(IPrizeDAO):
     def create(self, tombola_id: int, description: str, quantity: int) -> PrizeModel:
         entity = self.prize_repository.create(tombola_id, description, quantity)
         return self.convert_prize_entity_to_prize_model(entity)
+
+    def get_by_tombola(self, tombola_id: int) -> list[PrizeModel]:
+        entities = self.prize_repository.get_by_tombola_id(tombola_id)
+        return [self.convert_prize_entity_to_prize_model(entity) for entity in entities]

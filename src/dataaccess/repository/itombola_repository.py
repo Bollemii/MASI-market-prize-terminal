@@ -12,8 +12,8 @@ class ITombolaRepository(ABC):
         """Get tombola by id"""
 
     @abstractmethod
-    def get_current_tombola(self, current_date: datetime) -> TombolaEntity | None:
-        """Get current tombola"""
+    def get_tombola_by_date(self, current_date: datetime) -> TombolaEntity | None:
+        """Get tombola by date"""
 
     @abstractmethod
     def create(self, start_date: datetime, end_date: datetime) -> TombolaEntity:
