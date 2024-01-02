@@ -1,8 +1,10 @@
+from datetime import datetime
 from consolemenu.prompt_utils import UserQuit
 
 from src.views.generics.menu import Form
 from src.controllers.icreate_tombola_controller import ICreateTombolaController
 from src.controllers.iget_ticket_controller import IGetTicketController
+from src.controllers.icheck_tombola_dates_controller import ICheckTombolaDatesController
 from src.model.prize_model import PrizeModel
 
 
@@ -12,10 +14,12 @@ class CreateTombola(Form):
         parent_menu,
         create_tombola_controller: ICreateTombolaController,
         get_ticket_controller: IGetTicketController,
+        check_tombola_controller: ICheckTombolaDatesController,
     ):
         super().__init__(parent_menu)
         self.create_tombola_controller = create_tombola_controller
         self.get_ticket_controller = get_ticket_controller
+        self.check_tombola_controller = check_tombola_controller
 
     def execute(self):
         try:
@@ -24,6 +28,22 @@ class CreateTombola(Form):
                 "Entrez la date de début de la tombola", enable_quit=True
             )
             end_date = self._prompt_date("Entrez la date de fin de la tombola")
+
+            if start_date >= end_date:
+                self._prompt_to_continue(
+                    "La date de début doit être avant la date de fin"
+                )
+                return
+            if start_date < datetime.now():
+                self._prompt_to_continue(
+                    "Vous ne pouvez pas créer une tombola dans le passé"
+                )
+                return
+            if not self.check_tombola_controller.is_period_available(
+                start_date, end_date
+            ):
+                self._prompt_to_continue("Il y a déjà une tombola dans cette période")
+                return
 
             prizes = []
             total_prizes = 0

@@ -65,3 +65,48 @@ class TestTombolaDAO:
         assert current_tombola.id == tombola.id
         assert current_tombola.start_date == tombola.start_date
         assert current_tombola.end_date == tombola.end_date
+
+    def test_are_tombolas_in_range(self, tombola_dao: TombolaDAO):
+        tombola = TombolaModel(
+            1,
+            datetime.fromisoformat("2000-01-01 00:00:00"),
+            datetime.fromisoformat("9999-01-01 00:00:00"),
+        )
+        tombola = tombola_dao.create(tombola.start_date, tombola.end_date)
+
+        are_tombolas_in_range = tombola_dao.are_tombolas_in_dates_range(
+            datetime.fromisoformat("2024-01-01 00:00:00"),
+            datetime.fromisoformat("2025-01-01 00:00:00"),
+        )
+
+        assert are_tombolas_in_range
+
+    def test_are_not_tombolas_in_range(self, tombola_dao: TombolaDAO):
+        tombola = TombolaModel(
+            1,
+            datetime.fromisoformat("3000-01-01 00:00:00"),
+            datetime.fromisoformat("9999-01-01 00:00:00"),
+        )
+        tombola = tombola_dao.create(tombola.start_date, tombola.end_date)
+
+        are_tombolas_in_range = tombola_dao.are_tombolas_in_dates_range(
+            datetime.fromisoformat("2024-01-01 00:00:00"),
+            datetime.fromisoformat("2025-01-01 00:00:00"),
+        )
+
+        assert not are_tombolas_in_range
+
+    def test_are_tombolas_in_range_border(self, tombola_dao: TombolaDAO):
+        tombola = TombolaModel(
+            1,
+            datetime.fromisoformat("3000-01-01 00:00:00"),
+            datetime.fromisoformat("9999-01-01 00:00:00"),
+        )
+        tombola = tombola_dao.create(tombola.start_date, tombola.end_date)
+
+        are_tombolas_in_range = tombola_dao.are_tombolas_in_dates_range(
+            datetime.fromisoformat("2024-01-01 00:00:00"),
+            datetime.fromisoformat("3000-01-01 00:00:00"),
+        )
+
+        assert are_tombolas_in_range

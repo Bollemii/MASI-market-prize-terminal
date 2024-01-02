@@ -18,3 +18,9 @@ class ITombolaRepository(ABC):
     @abstractmethod
     def create(self, start_date: datetime, end_date: datetime) -> TombolaEntity:
         """Create tombola"""
+
+    @abstractmethod
+    def are_tombolas_in_dates_range(
+        self, start_date: datetime, end_date: datetime
+    ) -> bool:
+        """Check if there are tombola in dates range"""

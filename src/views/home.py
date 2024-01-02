@@ -1,5 +1,4 @@
 from consolemenu.items import FunctionItem
-from src.controllers.iget_tombola_state_controller import IGetTombolaStateController
 
 from src.model.user_model import UserModel
 from src.utils.iuuid_manager import IUUIDManager
@@ -15,6 +14,8 @@ from src.controllers.icreate_tombola_controller import ICreateTombolaController
 from src.controllers.iplay_ticket_controller import IPlayTicketController
 from src.controllers.iget_ticket_controller import IGetTicketController
 from src.controllers.iget_current_tombola_controller import IGetCurrentTombolaController
+from src.controllers.icheck_tombola_dates_controller import ICheckTombolaDatesController
+from src.controllers.iget_tombola_state_controller import IGetTombolaStateController
 
 
 class Home(Menu):
@@ -27,6 +28,7 @@ class Home(Menu):
         get_ticket_controller: IGetTicketController,
         get_current_tombola_controller: IGetCurrentTombolaController,
         get_tombola_state_controller: IGetTombolaStateController,
+        check_tombola_controller: ICheckTombolaDatesController,
         uuid_manager: IUUIDManager,
     ):
         super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
@@ -43,16 +45,19 @@ class Home(Menu):
         self.register_menu = Register(self, register_controller)
         self.login_menu = Login(self, connection_controller)
         self.create_tombola_menu = CreateTombola(
-            self, create_tombola_controller, get_ticket_controller
+            self,
+            create_tombola_controller,
+            get_ticket_controller,
+            check_tombola_controller,
         )
         self.play_ticket_menu = PlayTicket(
             self,
-            self.play_ticket_controller,
-            self.uuid_manager,
+            play_ticket_controller,
+            uuid_manager,
         )
         self.tombola_consultation_menu = TombolaConsultation(
             self,
-            self.get_tombola_state_controller,
+            get_tombola_state_controller,
         )
 
         self.register_item = FunctionItem("S'enregistrer", self.register_menu.execute)
@@ -97,7 +102,10 @@ class Home(Menu):
                 play_ticket_item = FunctionItem(
                     "Jouer un ticket",
                     self.play_ticket_menu.execute,
-                    args=(self.user_connected,),
+                    args=(
+                        self.user_connected,
+                        self.current_tombola,
+                    ),
                 )
                 self.append_item(play_ticket_item)
             else:

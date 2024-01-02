@@ -70,3 +70,8 @@ class TombolaDAO(ITombolaDAO):
         if tombola_entity is None:
             raise Exception("The tombola was not created")
         return self.convert_tombola_entity_to_tombola_model(tombola_entity)
+
+    def are_tombolas_in_dates_range(
+        self, start_date: datetime, end_date: datetime
+    ) -> bool:
+        return self.tombola_repository.are_tombolas_in_dates_range(start_date, end_date)
