@@ -1,7 +1,9 @@
+from getpass import getpass
+from consolemenu.prompt_utils import UserQuit
+
 from src.exception.user_not_found_exception import UserNotFoundException
 from src.model.user_model import UserModel
 from src.views.generics.menu import Form
-from getpass import getpass
 from src.controllers.connection_controller import ConnectionController
 
 
@@ -11,21 +13,22 @@ class Login(Form):
         self.connection_controller = connection_controller
 
     def execute(self) -> UserModel | None:
-        print("Formulaire de connexion")
-        email = self._get_email("Entrez votre email : ", enable_quit=True)
-        password = getpass("Entrez votre mot de passe : ")
-
         try:
+            print("Formulaire de connexion")
+            email = self._prompt_email("Entrez votre email : ", enable_quit=True)
+            password = getpass("Entrez votre mot de passe : ")
+
             user = self.connection_controller.connection(email, password)
 
-            input("Vous êtes bien connecté, appuyez sur entrée pour continuer")
+            self._prompt_to_continue("Vous êtes bien connecté")
             return user
+        except UserQuit:
+            return None
         except UserNotFoundException:
-            input("Erreur lors de la connexion, appuyez sur entrée pour continuer")
+            self._prompt_to_continue(
+                "Erreur de connexion, email ou mot de passe incorrect"
+            )
             return None
         except Exception as e:
-            input(
-                f"""Erreur inconnue lors de la connexion : {
-                    e}, appuyez sur entrée pour continuer"""
-            )
+            self._prompt_to_continue(f"Erreur inconnue lors de la connexion : {e}")
             return None
