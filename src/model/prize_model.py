@@ -2,6 +2,8 @@ from src.model.tombola_model import TombolaModel
 
 
 class PrizeModel:
+    """Prize model"""
+
     def __init__(
         self,
         id: int | None,

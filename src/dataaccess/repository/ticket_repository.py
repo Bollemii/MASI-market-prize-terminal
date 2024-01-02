@@ -1,18 +1,27 @@
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
-from src.dataaccess.repository.tombola_repository import TombolaRepository
-from src.dataaccess.repository.user_repository import UserRepository
-from src.dataaccess.repository.prize_repository import PrizeRepository
+from src.dataaccess.repository.itombola_repository import ITombolaRepository
+from src.dataaccess.repository.iuser_repository import IUserRepository
+from src.dataaccess.repository.iprize_repository import IPrizeRepository
 from src.dataaccess.entity.ticket_entity import TicketEntity
 from src.exception.ticket_not_found_exception import TicketNotFoundException
 from src.exception.tombola_not_found_exception import TombolaNotFoundException
+from src.dataaccess.repository.iticket_repository import ITicketRepository
 
 
-class TicketRepository(SqliteRepository):
-    def __init__(self, base_path: str):
+class TicketRepository(SqliteRepository, ITicketRepository):
+    """Ticket repository"""
+
+    def __init__(
+        self,
+        base_path: str,
+        tombola_repository: ITombolaRepository,
+        user_repository: IUserRepository,
+        prize_repository: IPrizeRepository,
+    ):
         super().__init__(base_path)
-        self.tombola_repository = TombolaRepository(base_path)
-        self.user_repository = UserRepository(base_path)
-        self.prize_repository = PrizeRepository(base_path)
+        self.tombola_repository = tombola_repository
+        self.user_repository = user_repository
+        self.prize_repository = prize_repository
 
         self.execute_create_table(
             """
@@ -28,7 +37,7 @@ class TicketRepository(SqliteRepository):
         """
         )
 
-    def create_entity(
+    def _create_entity(
         self, code: str, tombola_id: int, prize_id: int | None, user_id: int | None
     ) -> TicketEntity:
         tombola = self.tombola_repository.get_by_id(tombola_id)
@@ -43,7 +52,7 @@ class TicketRepository(SqliteRepository):
         if len(result) == 0:
             return None
         code, tombola_id, user_id, prize_id = result[0]
-        return self.create_entity(code, tombola_id, prize_id, user_id)
+        return self._create_entity(code, tombola_id, prize_id, user_id)
 
     def assign_user(self, code: str, user_id: int) -> TicketEntity:
         result = self.execute_statement(
@@ -52,7 +61,7 @@ class TicketRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise TicketNotFoundException()
         code, tombola_id, user_id, prize_id = result[0]
-        return self.create_entity(code, tombola_id, prize_id, user_id)
+        return self._create_entity(code, tombola_id, prize_id, user_id)
 
     def assign_prize(self, code: str, prize_id: int) -> TicketEntity:
         result = self.execute_statement(
@@ -61,7 +70,7 @@ class TicketRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise TicketNotFoundException()
         code, tombola_id, user_id, prize_id = result[0]
-        return self.create_entity(code, tombola_id, prize_id, user_id)
+        return self._create_entity(code, tombola_id, prize_id, user_id)
 
     def create(self, code: str, tombola_id: int, prize_id: int | None) -> TicketEntity:
         result = self.execute_statement(
@@ -71,13 +80,13 @@ class TicketRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise Exception("Ticket not created")
         code, tombola_id, user_id, prize_id = result[0]
-        return self.create_entity(code, tombola_id, prize_id, user_id)
+        return self._create_entity(code, tombola_id, prize_id, user_id)
 
     def get_by_tombola(self, tombola_id: int) -> list[TicketEntity]:
         result = self.execute_query(
             """SELECT * FROM ticket WHERE tombola_id = ?""", (tombola_id,)
         )
         return [
-            self.create_entity(code, tombola_id, prize_id, user_id)
+            self._create_entity(code, tombola_id, prize_id, user_id)
             for code, tombola_id, user_id, prize_id in result
         ]

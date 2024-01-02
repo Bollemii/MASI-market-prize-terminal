@@ -1,16 +1,20 @@
+from src.dataaccess.dao.iuser_dao import IUserDAO
 from src.model.user_model import UserModel
 from src.dataaccess.entity.user_entity import UserEntity
-from src.dataaccess.repository.user_repository import UserRepository
-from src.dataaccess.dao.city_dao import CityDAO
+from src.dataaccess.repository.iuser_repository import IUserRepository
+from src.dataaccess.dao.icity_dao import ICityDAO
 from src.exception.user_not_found_exception import UserNotFoundException
 
 
-class UserDAO:
-    def __init__(self, base_path: str):
-        self.user_repository = UserRepository(base_path)
-        self.city_dao = CityDAO(base_path)
+class UserDAO(IUserDAO):
+    """Dao for User"""
+
+    def __init__(self, user_repository: IUserRepository, city_dao: ICityDAO):
+        self.user_repository = user_repository
+        self.city_dao = city_dao
 
     def convert_user_entity_to_user_model(self, entity: UserEntity) -> UserModel:
+        """Convert user entity to user model"""
         return UserModel(
             entity.id,
             entity.email,

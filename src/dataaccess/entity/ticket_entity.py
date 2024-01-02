@@ -4,6 +4,8 @@ from src.dataaccess.entity.prize_entity import PrizeEntity
 
 
 class TicketEntity:
+    """Ticket entity"""
+
     def __init__(
         self,
         code: str,

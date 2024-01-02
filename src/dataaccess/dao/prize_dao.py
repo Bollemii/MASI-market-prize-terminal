@@ -1,14 +1,17 @@
-from src.dataaccess.dao.tombola_dao import TombolaDAO
-from src.dataaccess.repository.prize_repository import PrizeRepository
+from src.dataaccess.dao.iprize_dao import IPrizeDAO
+from src.dataaccess.dao.itombola_dao import ITombolaDAO
+from src.dataaccess.repository.iprize_repository import IPrizeRepository
 from src.dataaccess.entity.prize_entity import PrizeEntity
 from src.exception.prize_not_found_exception import PrizeNotFoundException
 from src.model.prize_model import PrizeModel
 
 
-class PrizeDAO:
-    def __init__(self, base_path: str):
-        self.prize_repository = PrizeRepository(base_path)
-        self.tombola_dao = TombolaDAO(base_path)
+class PrizeDAO(IPrizeDAO):
+    """Dao for Prize"""
+
+    def __init__(self, prize_repository: IPrizeRepository, tombola_dao: ITombolaDAO):
+        self.prize_repository = prize_repository
+        self.tombola_dao = tombola_dao
 
     def convert_prize_entity_to_prize_model(self, entity: PrizeEntity) -> PrizeModel:
         return PrizeModel(

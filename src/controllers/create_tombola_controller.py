@@ -1,13 +1,16 @@
 from datetime import datetime
 
-from src.dataaccess.dao.tombola_dao import TombolaDAO
+from src.controllers.icreate_tombola_controller import ICreateTombolaController
+from src.dataaccess.dao.itombola_dao import ITombolaDAO
 from src.model.prize_model import PrizeModel
 from src.model.tombola_model import TombolaModel
 
 
-class CreateTombolaController:
-    def __init__(self, base_path: str):
-        self.tombola_dao = TombolaDAO(base_path)
+class CreateTombolaController(ICreateTombolaController):
+    """Create tombola controller"""
+
+    def __init__(self, tombola_dao: ITombolaDAO):
+        self.tombola_dao = tombola_dao
 
     def create_tombola(
         self,

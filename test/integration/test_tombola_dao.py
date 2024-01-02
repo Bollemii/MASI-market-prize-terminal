@@ -3,6 +3,13 @@ from datetime import datetime
 
 from src.dataaccess.dao.tombola_dao import TombolaDAO
 from src.model.tombola_model import TombolaModel
+from src.dataaccess.repository.tombola_repository import TombolaRepository
+from src.dataaccess.repository.prize_repository import PrizeRepository
+from src.dataaccess.repository.ticket_repository import TicketRepository
+from src.dataaccess.repository.user_repository import UserRepository
+from src.dataaccess.repository.city_repository import CityRepository
+from src.utils.password_manager import PasswordManager
+from src.utils.uuid_manager import UUIDManager
 
 
 class TestTombolaDAO:
@@ -13,8 +20,28 @@ class TestTombolaDAO:
         base_path = "test_tombola_dao"
         return str(tmp_path_factory.mktemp(base_path, True))
 
-    def test_tombola_created(self, temp_folder):
-        tombola_dao = TombolaDAO(temp_folder)
+    @pytest.fixture(scope="function", autouse=True, name="tombola_dao")
+    def create_tombola_dao(self, temp_folder: str) -> TombolaDAO:
+        password_manager = PasswordManager()
+        uuid_manager = UUIDManager()
+        tombola_repository = TombolaRepository(temp_folder)
+        prize_repository = PrizeRepository(temp_folder, tombola_repository)
+        city_repository = CityRepository(temp_folder)
+        user_repository = UserRepository(temp_folder, city_repository, password_manager)
+        ticket_repository = TicketRepository(
+            temp_folder,
+            tombola_repository,
+            user_repository,
+            prize_repository,
+        )
+        return TombolaDAO(
+            tombola_repository,
+            prize_repository,
+            ticket_repository,
+            uuid_manager,
+        )
+
+    def test_tombola_created(self, tombola_dao: TombolaDAO):
         tombola = TombolaModel(
             1, datetime.fromisoformat("2000-01-01 00:00:00"), datetime.now()
         )
@@ -24,8 +51,7 @@ class TestTombolaDAO:
         assert tombola.start_date == tombola.start_date
         assert tombola.end_date == tombola.end_date
 
-    def test_get_current_tombola(self, temp_folder):
-        tombola_dao = TombolaDAO(temp_folder)
+    def test_get_current_tombola(self, tombola_dao: TombolaDAO):
         tombola = TombolaModel(
             1,
             datetime.fromisoformat("2000-01-01 00:00:00"),

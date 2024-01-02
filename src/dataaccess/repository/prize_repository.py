@@ -1,12 +1,15 @@
 from src.dataaccess.entity.prize_entity import PrizeEntity
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
-from src.dataaccess.repository.tombola_repository import TombolaRepository
+from src.dataaccess.repository.itombola_repository import ITombolaRepository
+from src.dataaccess.repository.iprize_repository import IPrizeRepository
 
 
-class PrizeRepository(SqliteRepository):
-    def __init__(self, base_path: str):
+class PrizeRepository(SqliteRepository, IPrizeRepository):
+    """Repository for Prize"""
+
+    def __init__(self, base_path: str, tombola_repository: ITombolaRepository):
         super().__init__(base_path)
-        self.tombola_repository = TombolaRepository(base_path)
+        self.tombola_repository = tombola_repository
 
         self.execute_create_table(
             """
@@ -32,7 +35,7 @@ class PrizeRepository(SqliteRepository):
         """
         )
 
-    def create_entity(
+    def _create_entity(
         self, id: int, tombola_id: int, prize_id: int, nb_available: int, nb_won: int
     ) -> PrizeEntity:
         tombola = self.tombola_repository.get_by_id(tombola_id)
@@ -42,57 +45,6 @@ class PrizeRepository(SqliteRepository):
         if description is None:
             raise Exception("Prize item not found")
         return PrizeEntity(id, tombola, description, nb_available, nb_won)
-
-    def get_by_id(self, id: int) -> PrizeEntity | None:
-        result = self.execute_query(
-            """
-            SELECT * FROM tombola_prize WHERE id = ?""",
-            (id,),
-        )
-        if len(result) == 0:
-            return None
-        id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
-        return self.create_entity(id, tombola_id, prize_id, nb_available, nb_won)
-
-    def get_by_tombola_id(self, tombola_id: int) -> list[PrizeEntity]:
-        result = self.execute_query(
-            """
-            SELECT * FROM tombola_prize WHERE tombola_id = ?""",
-            (tombola_id,),
-        )
-        return [
-            self.create_entity(id, tombola_id, prize_id, nb_available, nb_won)
-            for id, tombola_id, prize_id, nb_available, nb_won, _, _ in result
-        ]
-
-    def get_by_tombola_and_description(
-        self, tombola_id: int, description: str
-    ) -> PrizeEntity:
-        result = self.execute_query(
-            """
-            SELECT tombola_prize.id, tombola_id, prize.id, nb_available, nb_won FROM tombola_prize
-            INNER JOIN prize ON prize.id = tombola_prize.prize_id
-            WHERE tombola_prize.tombola_id = ? AND prize.description = ?""",
-            (tombola_id, description),
-        )
-        if len(result) == 0:
-            raise Exception("Prize not found")
-        id, tombola_id, prize_id, nb_available, nb_won = result[0]
-        return self.create_entity(id, tombola_id, prize_id, nb_available, nb_won)
-
-    def prize_won(self, id: int) -> PrizeEntity:
-        result = self.execute_statement(
-            """
-            UPDATE tombola_prize SET nb_won = nb_won + 1,
-                nb_available = nb_available - 1
-                WHERE id = ?;
-            """,
-            (id,),
-        )
-        if result is None or len(result) == 0:
-            raise Exception("Prize not found")
-        id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
-        return self.create_entity(id, tombola_id, prize_id, nb_available, nb_won)
 
     def _get_prize_item_id_by_description(self, description: str) -> int | None:
         result = self.execute_query(
@@ -113,6 +65,42 @@ class PrizeRepository(SqliteRepository):
         if len(result) == 0:
             return None
         return result[0][0]
+
+    def get_by_id(self, id: int) -> PrizeEntity | None:
+        result = self.execute_query(
+            """
+            SELECT * FROM tombola_prize WHERE id = ?""",
+            (id,),
+        )
+        if len(result) == 0:
+            return None
+        id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
+        return self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)
+
+    def get_by_tombola_id(self, tombola_id: int) -> list[PrizeEntity]:
+        result = self.execute_query(
+            """
+            SELECT * FROM tombola_prize WHERE tombola_id = ?""",
+            (tombola_id,),
+        )
+        return [
+            self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)
+            for id, tombola_id, prize_id, nb_available, nb_won, _, _ in result
+        ]
+
+    def prize_won(self, id: int) -> PrizeEntity:
+        result = self.execute_statement(
+            """
+            UPDATE tombola_prize SET nb_won = nb_won + 1,
+                nb_available = nb_available - 1
+                WHERE id = ?;
+            """,
+            (id,),
+        )
+        if result is None or len(result) == 0:
+            raise Exception("Prize not found")
+        id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
+        return self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)
 
     def create_prize_item(self, description: str) -> int:
         result = self.execute_statement(
@@ -139,4 +127,4 @@ class PrizeRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise Exception("Prize not created")
         id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
-        return self.create_entity(id, tombola_id, prize_id, nb_available, nb_won)
+        return self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)

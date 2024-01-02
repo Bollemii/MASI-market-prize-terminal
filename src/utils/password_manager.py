@@ -1,7 +1,11 @@
 import bcrypt
 
+from src.utils.ipassword_manager import IPasswordManager
 
-class PasswordManager:
+
+class PasswordManager(IPasswordManager):
+    """Password Manager"""
+
     def encrypt_password(self, password: str) -> str:
         return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 

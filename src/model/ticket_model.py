@@ -4,6 +4,8 @@ from src.model.prize_model import PrizeModel
 
 
 class TicketModel:
+    """Ticket model"""
+
     def __init__(
         self,
         code: str,

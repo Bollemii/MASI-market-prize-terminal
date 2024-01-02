@@ -1,25 +1,28 @@
 from consolemenu.items import FunctionItem
 
 from src.model.user_model import UserModel
+from src.utils.iuuid_manager import IUUIDManager
 from src.views.generics.menu import Menu
 from src.views.form.register import Register
 from src.views.form.create_tombola import CreateTombola
 from src.views.form.play_ticket import PlayTicket
 from src.views.form.login import Login
-from src.controllers.register_controller import RegisterController
-from src.controllers.connection_controller import ConnectionController
-from src.controllers.create_tombola_controller import CreateTombolaController
-from src.controllers.play_ticket_controller import PlayTicketController
+from src.controllers.iregister_controller import IRegisterController
+from src.controllers.iconnection_controller import IConnectionController
+from src.controllers.icreate_tombola_controller import ICreateTombolaController
+from src.controllers.iplay_ticket_controller import IPlayTicketController
+from src.controllers.iget_ticket_controller import IGetTicketController
 
 
 class Home(Menu):
     def __init__(
         self,
-        register_controller: RegisterController,
-        connection_controller: ConnectionController,
-        create_tombola_controller: CreateTombolaController,
-        play_ticket_controller: PlayTicketController,
-        get_ticket_controller,
+        register_controller: IRegisterController,
+        connection_controller: IConnectionController,
+        create_tombola_controller: ICreateTombolaController,
+        play_ticket_controller: IPlayTicketController,
+        get_ticket_controller: IGetTicketController,
+        uuid_manager: IUUIDManager,
     ):
         super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
         self.user_connected: UserModel | None = None
@@ -28,6 +31,7 @@ class Home(Menu):
         self.create_tombola_controller = create_tombola_controller
         self.play_ticket_controller = play_ticket_controller
         self.get_ticket_controller = get_ticket_controller
+        self.uuid_manager = uuid_manager
 
         self.register_item = FunctionItem(
             "S'enregistrer", Register(self, register_controller).execute
@@ -45,6 +49,7 @@ class Home(Menu):
         self.play_ticket_item: FunctionItem
 
     def _logout(self):
+        """Logout user"""
         self.user_connected = None
         # recreate items to clear their get_return
         self.register_item = FunctionItem(
@@ -72,7 +77,10 @@ class Home(Menu):
                 self.play_ticket_item = FunctionItem(
                     "Jouer un ticket",
                     PlayTicket(
-                        self, self.play_ticket_controller, self.user_connected
+                        self,
+                        self.play_ticket_controller,
+                        self.user_connected,
+                        self.uuid_manager,
                     ).execute,
                 )
                 self.append_item(self.play_ticket_item)

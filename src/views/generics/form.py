@@ -11,6 +11,7 @@ class Form(ABC):
         self.parent_menu = parent_menu
 
     def _prompt_user(self, message: str, enable_quit: bool = False):
+        """Prompt user for input"""
         return (
             PromptUtils(self.parent_menu.screen)
             .input(
@@ -22,6 +23,7 @@ class Form(ABC):
         )
 
     def _prompt_to_continue(self, message: str | None = None):
+        """Prompt user to continue"""
         if message is None:
             message = "Appuyez sur entrée pour continuer."
         else:
@@ -30,6 +32,7 @@ class Form(ABC):
         PromptUtils(self.parent_menu.screen).enter_to_continue(message)
 
     def _prompt_to_stop_continue(self, message: str):
+        """Prompt user to stop or continue"""
         response = ""
         while response not in ["y", "n"]:
             response = self._prompt_user(f"{message} (y/n) : ")
@@ -38,6 +41,7 @@ class Form(ABC):
     def _prompt_number(
         self, message: str, positive=True, enable_quit: bool = False
     ) -> int:
+        """Prompt user for a number"""
         number = self._prompt_user(message, enable_quit=enable_quit)
         try:
             number = int(number)
@@ -49,6 +53,7 @@ class Form(ABC):
         return number
 
     def _prompt_date(self, message: str, enable_quit: bool = False) -> datetime:
+        """Prompt user for a date"""
         date = self._prompt_user(message + " (jj-mm-aaaa)", enable_quit=enable_quit)
         try:
             date = datetime.strptime(date, "%d-%m-%Y")
@@ -58,6 +63,7 @@ class Form(ABC):
         return date
 
     def _prompt_email(self, message: str, enable_quit: bool = False) -> str:
+        """Prompt user for an email"""
         email = self._prompt_user(message, enable_quit=enable_quit)
         if re.match(r"^[^@]+@[^@]+\.[^@]+$", email) is None:
             print("Veuillez entrer une adresse email valide")

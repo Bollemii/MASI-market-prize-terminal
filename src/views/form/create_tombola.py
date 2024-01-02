@@ -1,8 +1,8 @@
 from consolemenu.prompt_utils import UserQuit
 
 from src.views.generics.menu import Form
-from src.controllers.create_tombola_controller import CreateTombolaController
-from src.controllers.get_ticket_controller import GetTicketController
+from src.controllers.icreate_tombola_controller import ICreateTombolaController
+from src.controllers.iget_ticket_controller import IGetTicketController
 from src.model.prize_model import PrizeModel
 
 
@@ -10,8 +10,8 @@ class CreateTombola(Form):
     def __init__(
         self,
         parent_menu,
-        create_tombola_controller: CreateTombolaController,
-        get_ticket_controller: GetTicketController,
+        create_tombola_controller: ICreateTombolaController,
+        get_ticket_controller: IGetTicketController,
     ):
         super().__init__(parent_menu)
         self.create_tombola_controller = create_tombola_controller

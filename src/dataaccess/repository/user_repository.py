@@ -1,16 +1,24 @@
+from src.dataaccess.repository.iuser_repository import IUserRepository
 from src.exception.password_exception import PasswordException
-from src.utils.password_manager import PasswordManager
-from src.dataaccess.repository.city_repository import CityRepository
+from src.utils.ipassword_manager import IPasswordManager
+from src.dataaccess.repository.icity_repository import ICityRepository
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 from src.dataaccess.entity.user_entity import UserEntity
 
 
-class UserRepository(SqliteRepository):
-    def __init__(self, base_path: str):
+class UserRepository(SqliteRepository, IUserRepository):
+    """Repository for User"""
+
+    def __init__(
+        self,
+        base_path: str,
+        city_repository: ICityRepository,
+        password_manager: IPasswordManager,
+    ):
         super().__init__(base_path)
 
-        self.password_manager = PasswordManager()
-        self.city_repository = CityRepository(base_path)
+        self.city_repository = city_repository
+        self.password_manager = password_manager
 
         self.execute_create_table(
             """
@@ -26,7 +34,7 @@ class UserRepository(SqliteRepository):
         """
         )
 
-    def create_entity(
+    def _create_entity(
         self, id: int, email: str, password: str, city_id: int, is_tenant: bool
     ) -> UserEntity:
         city = self.city_repository.get_by_id(city_id)
@@ -39,9 +47,9 @@ class UserRepository(SqliteRepository):
         if len(result) == 0:
             return None
         id, email, password, city_id, is_tenant, _, _ = result[0]
-        return self.create_entity(id, email, password, city_id, is_tenant)
+        return self._create_entity(id, email, password, city_id, is_tenant)
 
-    def update(self, id: int, email: str, password: str):
+    def update(self, id: int, email: str, password: str) -> UserEntity:
         result = self.execute_statement(
             "UPDATE user SET email = ?, password = ? WHERE id = ?",
             (email, self.password_manager.encrypt_password(password), id),
@@ -49,7 +57,7 @@ class UserRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise Exception("User not updated")
         id, email, password, city_id, is_tenant, _, _ = result[0]
-        return self.create_entity(id, email, password, city_id, is_tenant)
+        return self._create_entity(id, email, password, city_id, is_tenant)
 
     def connection(self, email: str, password: str) -> UserEntity | None:
         email = email.lower()
@@ -62,7 +70,7 @@ class UserRepository(SqliteRepository):
         id, email, encrypted_password, city_id, is_tenant, _, _ = result[0]
         if not self.password_manager.check_password(password, encrypted_password):
             raise PasswordException("Password is incorrect")
-        return self.create_entity(id, email, password, city_id, is_tenant)
+        return self._create_entity(id, email, password, city_id, is_tenant)
 
     def register(
         self, email: str, password: str, city_name: str, postal_code: str
@@ -79,4 +87,4 @@ class UserRepository(SqliteRepository):
             raise Exception("User not created")
 
         id, email, password, city_id, is_tenant, _, _ = result[0]
-        return self.create_entity(id, email, password, city_id, is_tenant)
+        return self._create_entity(id, email, password, city_id, is_tenant)

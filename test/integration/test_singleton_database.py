@@ -39,14 +39,6 @@ class TestSingletonDatabase:
 
         assert singleton_database.get_cursor() is not None
 
-    def test_create_database(self, temp_folder):
-        """Test create database"""
-        singleton_database = SingletonDatabase(temp_folder)
-        singleton_database.create_database()
-        singleton_database.get_cursor().execute("SELECT * FROM user")
-
-        assert singleton_database.get_cursor().fetchall() == []
-
     def test_singleton(self, temp_folder):
         """Test singleton"""
         singleton_database = SingletonDatabase(temp_folder)

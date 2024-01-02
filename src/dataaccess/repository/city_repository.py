@@ -1,8 +1,11 @@
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 from src.dataaccess.entity.city_entity import CityEntity
+from src.dataaccess.repository.icity_repository import ICityRepository
 
 
-class CityRepository(SqliteRepository):
+class CityRepository(SqliteRepository, ICityRepository):
+    """Repository for City"""
+
     def __init__(self, base_path: str):
         super().__init__(base_path)
         self.execute_create_table(
@@ -15,7 +18,7 @@ class CityRepository(SqliteRepository):
         """
         )
 
-    def create_entity(self, id: int, name: str, postal_code: str) -> CityEntity:
+    def _create_entity(self, id: int, name: str, postal_code: str) -> CityEntity:
         return CityEntity(id, name, postal_code)
 
     def get_by_id(self, id: int) -> CityEntity | None:
@@ -23,7 +26,7 @@ class CityRepository(SqliteRepository):
         if len(result) == 0:
             return None
         id, name, postal_code = result[0]
-        return self.create_entity(id, name, postal_code)
+        return self._create_entity(id, name, postal_code)
 
     def get_by_name_and_postal_code(
         self, name: str, postal_code: str
@@ -34,7 +37,7 @@ class CityRepository(SqliteRepository):
         if len(result) == 0:
             return None
         id, name, postal_code = result[0]
-        return self.create_entity(id, name, postal_code)
+        return self._create_entity(id, name, postal_code)
 
     def create(self, name: str, postal_code: str) -> CityEntity:
         result = self.execute_statement(
@@ -43,4 +46,4 @@ class CityRepository(SqliteRepository):
         if result is None or len(result) == 0:
             raise Exception("City not created")
         id, name, postal_code = result[0]
-        return self.create_entity(id, name, postal_code)
+        return self._create_entity(id, name, postal_code)

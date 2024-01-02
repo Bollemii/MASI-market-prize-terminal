@@ -1,19 +1,28 @@
-from src.dataaccess.dao.user_dao import UserDAO
-from src.dataaccess.dao.prize_dao import PrizeDAO
-from src.dataaccess.dao.tombola_dao import TombolaDAO
-from src.dataaccess.repository.ticket_repository import TicketRepository
+from src.dataaccess.dao.iticket_dao import ITicketDAO
+from src.dataaccess.dao.iuser_dao import IUserDAO
+from src.dataaccess.dao.iprize_dao import IPrizeDAO
+from src.dataaccess.dao.itombola_dao import ITombolaDAO
+from src.dataaccess.repository.iticket_repository import ITicketRepository
 from src.dataaccess.entity.ticket_entity import TicketEntity
 from src.exception.ticket_not_found_exception import TicketNotFoundException
 from src.model.ticket_model import TicketModel
 from src.model.user_model import UserModel
 
 
-class TicketDAO:
-    def __init__(self, base_path: str):
-        self.ticket_repository = TicketRepository(base_path)
-        self.tombola_dao = TombolaDAO(base_path)
-        self.user_dao = UserDAO(base_path)
-        self.prize_dao = PrizeDAO(base_path)
+class TicketDAO(ITicketDAO):
+    """Dao for Ticket"""
+
+    def __init__(
+        self,
+        ticket_repository: ITicketRepository,
+        tombola_dao: ITombolaDAO,
+        user_dao: IUserDAO,
+        prize_dao: IPrizeDAO,
+    ):
+        self.ticket_repository = ticket_repository
+        self.tombola_dao = tombola_dao
+        self.user_dao = user_dao
+        self.prize_dao = prize_dao
 
     def convert_ticket_entity_to_ticket_model(
         self, entity: TicketEntity

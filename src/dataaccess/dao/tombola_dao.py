@@ -1,22 +1,29 @@
 from datetime import datetime
+from src.dataaccess.dao.itombola_dao import ITombolaDAO
 
 from src.dataaccess.entity.tombola_entity import TombolaEntity
-from src.dataaccess.repository.tombola_repository import TombolaRepository
-from src.dataaccess.repository.ticket_repository import TicketRepository
-from src.dataaccess.repository.prize_repository import PrizeRepository
+from src.dataaccess.repository.itombola_repository import ITombolaRepository
+from src.dataaccess.repository.iticket_repository import ITicketRepository
+from src.dataaccess.repository.iprize_repository import IPrizeRepository
 from src.model.tombola_model import TombolaModel
 from src.model.prize_model import PrizeModel
-from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
-from src.utils.uuid_manager import UUIDManager
+from src.utils.iuuid_manager import IUUIDManager
 
 
-class TombolaDAO:
-    def __init__(self, base_path: str):
-        self.tombola_repository = TombolaRepository(base_path)
-        self.sqlite_repository = SqliteRepository(base_path)
-        self.prize_repository = PrizeRepository(base_path)
-        self.ticket_repository = TicketRepository(base_path)
-        self.uuid_manager = UUIDManager()
+class TombolaDAO(ITombolaDAO):
+    """Tombola DAO"""
+
+    def __init__(
+        self,
+        tombola_repository: ITombolaRepository,
+        prize_repository: IPrizeRepository,
+        ticket_repository: ITicketRepository,
+        uuid_manager: IUUIDManager,
+    ):
+        self.tombola_repository = tombola_repository
+        self.prize_repository = prize_repository
+        self.ticket_repository = ticket_repository
+        self.uuid_manager = uuid_manager
 
     def convert_tombola_entity_to_tombola_model(
         self, entity: TombolaEntity

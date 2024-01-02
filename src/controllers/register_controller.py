@@ -1,11 +1,14 @@
-from src.dataaccess.dao.user_dao import UserDAO
+from src.controllers.iregister_controller import IRegisterController
+from src.dataaccess.dao.iuser_dao import IUserDAO
 from src.exception.password_exception import PasswordException
 from src.model.user_model import UserModel
 
 
-class RegisterController:
-    def __init__(self, base_path: str):
-        self.user_dao = UserDAO(base_path)
+class RegisterController(IRegisterController):
+    """Register controller"""
+
+    def __init__(self, user_dao: IUserDAO):
+        self.user_dao = user_dao
 
     def register(
         self,
