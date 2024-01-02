@@ -21,7 +21,7 @@ class Home(Menu):
         play_ticket_controller: PlayTicketController,
         get_ticket_controller,
     ):
-        super().__init__("Loot borne", exit_option_text="Quitter")
+        super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
         self.user_connected: UserModel | None = None
         self.register_controller = register_controller
         self.connection_controller = connection_controller

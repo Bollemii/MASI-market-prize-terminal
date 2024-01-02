@@ -46,6 +46,8 @@ class CreateTombola(Form):
                         total_prizes}) : """,
                     positive=True,
                 )
+
+            print("Génération des tickets, veuillez patienter...")
             tombola = self.create_tombola_controller.create_tombola(
                 start_date, end_date, prizes, nb_tickets
             )
