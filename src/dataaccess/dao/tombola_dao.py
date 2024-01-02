@@ -31,7 +31,7 @@ class TombolaDAO(ITombolaDAO):
         return TombolaModel(entity.id, entity.start_date, entity.end_date)
 
     def get_current_tombola(self) -> TombolaModel | None:
-        result = self.tombola_repository.get_current_tombola(datetime.now())
+        result = self.tombola_repository.get_tombola_by_date(datetime.now())
         if not result:
             return None
         return self.convert_tombola_entity_to_tombola_model(result)

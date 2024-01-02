@@ -13,16 +13,14 @@ class PlayTicket(Form):
         self,
         parent_menu,
         play_ticket_controller: IPlayTicketController,
-        user: UserModel,
         uuid_manager: IUUIDManager,
     ):
         super().__init__(parent_menu)
         self.play_ticket_controller = play_ticket_controller
         self.uuid_manager = uuid_manager
-        self.user = user
         self.slot = Slot()
 
-    def execute(self):
+    def execute(self, user: UserModel):
         try:
             ticket_code = self._prompt_user(
                 "Entrez le code de votre ticket", enable_quit=True
@@ -32,7 +30,7 @@ class PlayTicket(Form):
                 print("Code de ticket invalide")
                 return
 
-            result = self.play_ticket_controller.play_ticket(ticket_code, self.user)
+            result = self.play_ticket_controller.play_ticket(ticket_code, user)
             if not result:
                 print("Votre ticket n'existe pas ou a déjà été joué")
                 self._prompt_to_continue()

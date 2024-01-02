@@ -18,3 +18,7 @@ class IPrizeDAO(ABC):
     @abstractmethod
     def create(self, tombola_id: int, description: str, quantity: int) -> PrizeModel:
         """Create prize"""
+
+    @abstractmethod
+    def get_by_tombola(self, tombola_id: int) -> list[PrizeModel]:
+        """Get prizes by tombola id"""
