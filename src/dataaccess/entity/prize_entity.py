@@ -2,6 +2,8 @@ from src.dataaccess.entity.tombola_entity import TombolaEntity
 
 
 class PrizeEntity:
+    """Prize entity"""
+
     def __init__(
         self,
         id: int | None,

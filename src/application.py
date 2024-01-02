@@ -21,6 +21,8 @@ from src.views.home import Home
 
 
 class Application:
+    """Application class"""
+
     def __init__(self):
         base_path = os.path.join(os.getcwd(), "data")
         os.makedirs(base_path, exist_ok=True)

@@ -2,6 +2,8 @@ from src.model.city_model import CityModel
 
 
 class UserModel:
+    """User model"""
+
     def __init__(
         self,
         id: int,

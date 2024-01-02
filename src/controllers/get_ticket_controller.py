@@ -4,6 +4,8 @@ from src.model.ticket_model import TicketModel
 
 
 class GetTicketController(IGetTicketController):
+    """Get ticket controller"""
+
     def __init__(self, ticket_dao: ITicketDAO):
         self.ticket_dao = ticket_dao
 

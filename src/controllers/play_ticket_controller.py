@@ -7,6 +7,8 @@ from src.model.user_model import UserModel
 
 
 class PlayTicketController(IPlayTicketController):
+    """Play ticket controller"""
+
     def __init__(self, ticket_dao: ITicketDAO, prize_dao: IPrizeDAO):
         self.ticket_dao = ticket_dao
         self.prize_dao = prize_dao

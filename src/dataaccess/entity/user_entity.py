@@ -2,6 +2,8 @@ from src.dataaccess.entity.city_entity import CityEntity
 
 
 class UserEntity:
+    """User entity"""
+
     def __init__(
         self,
         id: int,

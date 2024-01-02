@@ -49,6 +49,7 @@ class Home(Menu):
         self.play_ticket_item: FunctionItem
 
     def _logout(self):
+        """Logout user"""
         self.user_connected = None
         # recreate items to clear their get_return
         self.register_item = FunctionItem(

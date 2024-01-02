@@ -1,5 +1,6 @@
 import re
 
+from src.config.isingleton_database import ISingletonDatabase
 from src.config.singleton_database import SingletonDatabase
 
 
@@ -8,6 +9,8 @@ class SqliteRepository:
 
     def __init__(self, base_path: str):
         self.base_path = base_path
+
+        self.singleton_database: ISingletonDatabase
 
     def query_cleaner(self, query: str) -> str:
         """Clean query"""

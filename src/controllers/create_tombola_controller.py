@@ -7,6 +7,8 @@ from src.model.tombola_model import TombolaModel
 
 
 class CreateTombolaController(ICreateTombolaController):
+    """Create tombola controller"""
+
     def __init__(self, tombola_dao: ITombolaDAO):
         self.tombola_dao = tombola_dao
 
