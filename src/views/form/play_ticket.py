@@ -1,5 +1,6 @@
 from consolemenu.prompt_utils import UserQuit
 from time import sleep
+from src.model.tombola_model import TombolaModel
 
 from src.views.generics.menu import Form
 from src.views.animation.animation import Slot
@@ -20,7 +21,7 @@ class PlayTicket(Form):
         self.uuid_manager = uuid_manager
         self.slot = Slot()
 
-    def execute(self, user: UserModel):
+    def execute(self, user: UserModel, current_tombola: TombolaModel):
         try:
             ticket_code = self._prompt_user(
                 "Entrez le code de votre ticket", enable_quit=True
@@ -33,6 +34,10 @@ class PlayTicket(Form):
             result = self.play_ticket_controller.play_ticket(ticket_code, user)
             if not result:
                 print("Votre ticket n'existe pas ou a déjà été joué")
+                self._prompt_to_continue()
+                return
+            if result.tombola.id != current_tombola.id:
+                print("Ce ticket est expiré")
                 self._prompt_to_continue()
                 return
 

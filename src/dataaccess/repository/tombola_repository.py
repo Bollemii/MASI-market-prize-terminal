@@ -47,6 +47,9 @@ class TombolaRepository(SqliteRepository, ITombolaRepository):
         )
 
     def create(self, start_date: datetime, end_date: datetime) -> TombolaEntity:
+        if self.are_tombolas_in_dates_range(start_date, end_date):
+            raise Exception("There is already a tombola in this period")
+
         result = self.execute_statement(
             """INSERT INTO tombola (start_date, end_date) VALUES (?, ?)""",
             (start_date.isoformat(), end_date.isoformat()),
@@ -59,3 +62,13 @@ class TombolaRepository(SqliteRepository, ITombolaRepository):
             datetime.fromisoformat(start_date_str),
             datetime.fromisoformat(end_date_str),
         )
+
+    def are_tombolas_in_dates_range(
+        self, start_date: datetime, end_date: datetime
+    ) -> bool:
+        result = self.execute_query(
+            """SELECT id FROM tombola
+            WHERE (? BETWEEN start_date AND end_date) OR (? BETWEEN start_date AND end_date)""",
+            (start_date.isoformat(), end_date.isoformat()),
+        )
+        return len(result) > 0

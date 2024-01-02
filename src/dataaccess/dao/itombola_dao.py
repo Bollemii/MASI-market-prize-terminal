@@ -32,3 +32,9 @@ class ITombolaDAO(ABC):
         nb_tickets: int,
     ) -> TombolaModel:
         """Create tombola with prize"""
+
+    @abstractmethod
+    def are_tombolas_in_dates_range(
+        self, start_date: datetime, end_date: datetime
+    ) -> bool:
+        """Check if there are tombola in dates range"""
