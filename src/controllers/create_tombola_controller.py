@@ -1,7 +1,8 @@
-from src.dataaccess.dao.tombola_dao import TombolaDAO
-from src.model.tombola_model import TombolaModel
-from src.dataaccess.entity.prize_entity import PrizeEntity
 from datetime import datetime
+
+from src.dataaccess.dao.tombola_dao import TombolaDAO
+from src.model.prize_model import PrizeModel
+from src.model.tombola_model import TombolaModel
 
 
 class CreateTombolaController:
@@ -12,7 +13,7 @@ class CreateTombolaController:
         self,
         start_date: datetime,
         end_date: datetime,
-        prizes: [PrizeEntity],
+        prizes: list[PrizeModel],
         nb_loser: int,
     ) -> TombolaModel:
         return self.tombola_dao.create_tombola_with_prize(

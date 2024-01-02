@@ -1,9 +1,6 @@
 import sqlite3
-import logging
 
 from src.config import db
-
-logger = logging.getLogger(__name__)
 
 
 class SingletonDatabase:
@@ -24,7 +21,6 @@ class SingletonDatabase:
         ).fetchall()
         if len(all_tables) == 0:
             try:
-                logger.info("Creating tables")
                 self.cursor.execute("begin")
                 self.cursor.execute(db.user_table_ddl)
                 self.cursor.execute(db.city_table_ddl)

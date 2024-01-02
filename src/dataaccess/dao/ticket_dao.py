@@ -3,6 +3,7 @@ from src.dataaccess.dao.prize_dao import PrizeDAO
 from src.dataaccess.dao.tombola_dao import TombolaDAO
 from src.dataaccess.repository.ticket_repository import TicketRepository
 from src.dataaccess.entity.ticket_entity import TicketEntity
+from src.exception.ticket_not_found_exception import TicketNotFoundException
 from src.model.ticket_model import TicketModel
 from src.model.user_model import UserModel
 
@@ -37,10 +38,10 @@ class TicketDAO:
             user,
         )
 
-    def get_by_code(self, code: str) -> TicketModel | None:
+    def get_by_code(self, code: str) -> TicketModel:
         entity = self.ticket_repository.get_by_code(code)
         if not entity:
-            return None
+            raise TicketNotFoundException()
         return self.convert_ticket_entity_to_ticket_model(entity)
 
     def assign_user(self, ticket: TicketModel, user: UserModel) -> TicketModel:
@@ -51,7 +52,7 @@ class TicketDAO:
         entity = self.ticket_repository.create(code, tombola_id, prize_id)
         return self.convert_ticket_entity_to_ticket_model(entity)
 
-    def get_by_tombola(self, tombola_id: int) -> [TicketModel]:
+    def get_by_tombola(self, tombola_id: int) -> list[TicketModel]:
         entities = self.ticket_repository.get_by_tombola(tombola_id)
         return [
             self.convert_ticket_entity_to_ticket_model(entity) for entity in entities

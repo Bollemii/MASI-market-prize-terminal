@@ -1,4 +1,5 @@
 from src.dataaccess.dao.user_dao import UserDAO
+from src.exception.password_exception import PasswordException
 from src.model.user_model import UserModel
 
 
@@ -13,11 +14,7 @@ class RegisterController:
         confirm_password: str,
         city_name: str,
         postal_code: str,
-    ) -> UserModel | None:
+    ) -> UserModel:
         if password != confirm_password:
-            raise Exception("Passwords don't match")
-        try:
-            return self.user_dao.register(email, password, city_name, postal_code)
-        except Exception as e:
-            print(e)
-            return None
+            raise PasswordException("Passwords don't match")
+        return self.user_dao.register(email, password, city_name, postal_code)

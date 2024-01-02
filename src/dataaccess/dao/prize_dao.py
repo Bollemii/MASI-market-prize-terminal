@@ -1,6 +1,7 @@
 from src.dataaccess.dao.tombola_dao import TombolaDAO
 from src.dataaccess.repository.prize_repository import PrizeRepository
 from src.dataaccess.entity.prize_entity import PrizeEntity
+from src.exception.prize_not_found_exception import PrizeNotFoundException
 from src.model.prize_model import PrizeModel
 
 
@@ -19,6 +20,8 @@ class PrizeDAO:
         )
 
     def prize_won(self, prize: PrizeModel) -> PrizeModel:
+        if prize.id is None:
+            raise PrizeNotFoundException()
         entity = self.prize_repository.prize_won(prize.id)
         return self.convert_prize_entity_to_prize_model(entity)
 

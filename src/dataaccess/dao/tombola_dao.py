@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from src.dataaccess.entity.prize_entity import PrizeEntity
 from src.dataaccess.entity.tombola_entity import TombolaEntity
 from src.dataaccess.repository.tombola_repository import TombolaRepository
 from src.dataaccess.repository.ticket_repository import TicketRepository
 from src.dataaccess.repository.prize_repository import PrizeRepository
 from src.model.tombola_model import TombolaModel
+from src.model.prize_model import PrizeModel
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
 from src.utils.uuid_manager import UUIDManager
 
@@ -37,24 +37,25 @@ class TombolaDAO:
         self,
         start_date: datetime,
         end_date: datetime,
-        prizes: [PrizeEntity],
+        prizes: list[PrizeModel],
         nb_lose: int,
     ) -> TombolaModel:
-        try:
-            entity = self.tombola_repository.create(start_date, end_date)
-            for prize in prizes:
-                if prize.id is None:
-                    prize = self.prize_repository.create(
-                        entity.id, prize.description, prize.nb_available
-                    )
-                for i in range(prize.nb_available):
-                    self.ticket_repository.create(
-                        self.uuid_manager.generate(), entity.id, prize.id
-                    )
-            for i in range(nb_lose):
-                self.ticket_repository.create(
-                    self.uuid_manager.generate(), entity.id, None
+        tombola_entity = self.tombola_repository.create(start_date, end_date)
+        for prize in prizes:
+            if prize.id is None:
+                prize = self.prize_repository.create(
+                    tombola_entity.id, prize.description, prize.nb_available
                 )
-        except Exception as e:
-            raise e
-        return self.convert_tombola_entity_to_tombola_model(entity)
+            for i in range(prize.nb_available):
+                self.ticket_repository.create(
+                    self.uuid_manager.generate(), tombola_entity.id, prize.id
+                )
+        for i in range(nb_lose):
+            self.ticket_repository.create(
+                self.uuid_manager.generate(), tombola_entity.id, None
+            )
+
+        tombola_entity = self.tombola_repository.get_by_id(tombola_entity.id)
+        if tombola_entity is None:
+            raise Exception("The tombola was not created")
+        return self.convert_tombola_entity_to_tombola_model(tombola_entity)

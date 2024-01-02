@@ -2,9 +2,6 @@ import bcrypt
 
 
 class PasswordManager:
-    def __init__(self):
-        pass
-
     def encrypt_password(self, password: str) -> str:
         return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
