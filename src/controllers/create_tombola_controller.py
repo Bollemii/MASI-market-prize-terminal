@@ -14,8 +14,8 @@ class CreateTombolaController:
         start_date: datetime,
         end_date: datetime,
         prizes: list[PrizeModel],
-        nb_loser: int,
+        nb_tickets: int,
     ) -> TombolaModel:
         return self.tombola_dao.create_tombola_with_prize(
-            start_date, end_date, prizes, nb_loser
+            start_date, end_date, prizes, nb_tickets
         )

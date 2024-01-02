@@ -1,6 +1,7 @@
+from abc import ABC, abstractmethod
 from consolemenu import ConsoleMenu, PromptUtils
 from datetime import datetime
-from abc import ABC, abstractmethod
+import re
 
 
 class Form(ABC):
@@ -20,24 +21,34 @@ class Form(ABC):
             .input_string
         )
 
-    def _get_number(self, message: str, positive=True) -> int:
-        number = self._prompt_user(message)
+    def _get_number(
+        self, message: str, positive=True, enable_quit: bool = False
+    ) -> int:
+        number = self._prompt_user(message, enable_quit=enable_quit)
         try:
             number = int(number)
-            assert number >= 0
+            if positive and number < 0:
+                raise Exception("Veuillez entrer un nombre positif")
         except Exception:
             print("Veuillez entrer un nombre")
             return self._get_number(message)
         return number
 
-    def _get_date(self, message: str) -> datetime:
-        date = self._prompt_user(message + " (jj-mm-aaaa)")
+    def _get_date(self, message: str, enable_quit: bool = False) -> datetime:
+        date = self._prompt_user(message + " (jj-mm-aaaa)", enable_quit=enable_quit)
         try:
             date = datetime.strptime(date, "%d-%m-%Y")
         except Exception:
             print("Veuillez entrer une date au format jj-mm-aaaa")
             return self._get_date(message)
         return date
+
+    def _get_email(self, message: str, enable_quit: bool = False) -> str:
+        email = self._prompt_user(message, enable_quit=enable_quit)
+        if re.match(r"^[^@]+@[^@]+\.[^@]+$", email) is None:
+            print("Veuillez entrer une adresse email valide")
+            return self._get_email(message)
+        return email
 
     @abstractmethod
     def execute(self):

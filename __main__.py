@@ -5,7 +5,6 @@ from src.application import Application
 
 
 def _stop_handler(signal, frame):
-    # clear screen
     if os.name == "nt":
         os.system("cls")
     else:

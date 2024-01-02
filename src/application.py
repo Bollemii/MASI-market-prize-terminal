@@ -12,7 +12,9 @@ class Application:
     @staticmethod
     def run():
         base_path = os.path.join(os.getcwd(), "data")
+
         Application._prepare(base_path)
+
         Home(
             RegisterController(base_path),
             ConnectionController(base_path),

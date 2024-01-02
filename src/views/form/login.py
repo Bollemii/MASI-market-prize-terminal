@@ -12,7 +12,7 @@ class Login(Form):
 
     def execute(self) -> UserModel | None:
         print("Formulaire de connexion")
-        email = self._prompt_user("Entrez votre email : ", enable_quit=True)
+        email = self._get_email("Entrez votre email : ", enable_quit=True)
         password = getpass("Entrez votre mot de passe : ")
 
         try:

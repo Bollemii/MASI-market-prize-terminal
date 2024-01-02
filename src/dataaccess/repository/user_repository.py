@@ -1,3 +1,4 @@
+from src.exception.password_exception import PasswordException
 from src.utils.password_manager import PasswordManager
 from src.dataaccess.repository.city_repository import CityRepository
 from src.dataaccess.repository.common.sqlite_repository import SqliteRepository
@@ -60,7 +61,7 @@ class UserRepository(SqliteRepository):
             return None
         id, email, encrypted_password, city_id, is_tenant, _, _ = result[0]
         if not self.password_manager.check_password(password, encrypted_password):
-            return None
+            raise PasswordException("Password is incorrect")
         return self.create_entity(id, email, password, city_id, is_tenant)
 
     def register(

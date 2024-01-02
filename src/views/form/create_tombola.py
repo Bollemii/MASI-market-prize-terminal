@@ -21,18 +21,24 @@ class CreateTombola(Form):
         end_date = self._get_date("Entrez la date de fin de la tombola")
 
         prizes = []
+        total_prizes = 0
 
         is_more = True
         print("Obtention des lots")
         while is_more:
             print("------------------")
             prize = self._get_prize()
+            total_prizes += prize.nb_available
             prizes.append(prize)
             is_more = self._get_continue()
 
-        nb_loser = self._get_number("Entrez le nombre de ticket perdant : ")
+        nb_tickets = -1
+        while nb_tickets < total_prizes:
+            nb_tickets = self._get_number(
+                f"Entrez le nombre de tickets à générer (minimum {total_prizes}) : "
+            )
         tombola = self.create_tombola_controller.create_tombola(
-            start_date, end_date, prizes, nb_loser
+            start_date, end_date, prizes, nb_tickets
         )
 
         # Print all codes tickets to test the application and play ticket feature
@@ -55,5 +61,7 @@ class CreateTombola(Form):
     def _get_continue(self) -> bool:
         response = ""
         while response not in ["y", "n"]:
-            response = self._prompt_user("Voulez-vous continuer ? (y/n) : ")
+            response = self._prompt_user(
+                "Voulez-vous ajouter un nouveau lot ? (y/n) : "
+            )
         return response == "y"

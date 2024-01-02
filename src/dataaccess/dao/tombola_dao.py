@@ -38,19 +38,23 @@ class TombolaDAO:
         start_date: datetime,
         end_date: datetime,
         prizes: list[PrizeModel],
-        nb_lose: int,
+        nb_tickets: int,
     ) -> TombolaModel:
         tombola_entity = self.tombola_repository.create(start_date, end_date)
+
+        total_prizes = 0
         for prize in prizes:
             if prize.id is None:
                 prize = self.prize_repository.create(
                     tombola_entity.id, prize.description, prize.nb_available
                 )
+            total_prizes += prize.nb_available
             for i in range(prize.nb_available):
                 self.ticket_repository.create(
                     self.uuid_manager.generate(), tombola_entity.id, prize.id
                 )
-        for i in range(nb_lose):
+
+        for i in range(nb_tickets - total_prizes):
             self.ticket_repository.create(
                 self.uuid_manager.generate(), tombola_entity.id, None
             )
