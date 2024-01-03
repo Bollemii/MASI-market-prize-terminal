@@ -1,13 +1,16 @@
 from src.controllers.iget_tombola_state_controller import IGetTombolaStateController
 from src.views.generics.form import Form
 from src.models.tombola_model import TombolaModel
+from src.views.generics.menu import Menu
 
 
 class TombolaConsultation(Form):
     """Tombola consultation form"""
 
     def __init__(
-        self, parent_menu, get_tombola_state_controller: IGetTombolaStateController
+        self,
+        parent_menu: Menu,
+        get_tombola_state_controller: IGetTombolaStateController,
     ):
         super().__init__(parent_menu)
         self.get_tombola_state_controller = get_tombola_state_controller

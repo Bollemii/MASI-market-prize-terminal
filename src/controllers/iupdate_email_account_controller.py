@@ -7,5 +7,5 @@ class IUpdateEmailAccountController(ABC):
     """Interface for UpdateEmailAccountController"""
 
     @abstractmethod
-    def update_email(self, id: int, email: str) -> UserModel:
+    def update_email(self, user: UserModel, email: str) -> UserModel:
         """Update the user email"""

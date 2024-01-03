@@ -7,5 +7,7 @@ class IUpdatePasswordAccountController(ABC):
     """Interface for UpdatePasswordAccountController"""
 
     @abstractmethod
-    def update_password(self, id: int, password: str) -> UserModel:
+    def update_password(
+        self, user: UserModel, password: str, confirm_password: str
+    ) -> UserModel:
         """Update the user password"""

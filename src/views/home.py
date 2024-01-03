@@ -1,4 +1,10 @@
 from consolemenu.items import FunctionItem
+from src.controllers.iupdate_email_account_controller import (
+    IUpdateEmailAccountController,
+)
+from src.controllers.iupdate_password_account_controller import (
+    IUpdatePasswordAccountController,
+)
 
 from src.models.user_model import UserModel
 from src.utils.iuuid_manager import IUUIDManager
@@ -16,6 +22,7 @@ from src.controllers.iget_ticket_controller import IGetTicketController
 from src.controllers.iget_current_tombola_controller import IGetCurrentTombolaController
 from src.controllers.icheck_tombola_dates_controller import ICheckTombolaDatesController
 from src.controllers.iget_tombola_state_controller import IGetTombolaStateController
+from src.views.menus.update_account import UpdateAccount
 
 
 class Home(Menu):
@@ -29,6 +36,8 @@ class Home(Menu):
         get_current_tombola_controller: IGetCurrentTombolaController,
         get_tombola_state_controller: IGetTombolaStateController,
         check_tombola_controller: ICheckTombolaDatesController,
+        update_email_controller: IUpdateEmailAccountController,
+        update_password_controller: IUpdatePasswordAccountController,
         uuid_manager: IUUIDManager,
     ):
         super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
@@ -40,6 +49,9 @@ class Home(Menu):
         self.get_ticket_controller = get_ticket_controller
         self.get_current_tombola_controller = get_current_tombola_controller
         self.get_tombola_state_controller = get_tombola_state_controller
+        self.check_tombola_controller = check_tombola_controller
+        self.update_email_controller = update_email_controller
+        self.update_password_controller = update_password_controller
         self.uuid_manager = uuid_manager
 
         self.register_menu = Register(self, register_controller)
@@ -62,8 +74,6 @@ class Home(Menu):
 
         self.register_item = FunctionItem("S'enregistrer", self.register_menu.execute)
         self.login_item = FunctionItem("Se connecter", self.login_menu.execute)
-
-        self.play_ticket_item: FunctionItem
 
     def _logout(self):
         """Logout user"""
@@ -90,6 +100,14 @@ class Home(Menu):
                     args=(self.current_tombola,),
                 )
 
+            update_account_menu = UpdateAccount(
+                self.user_connected,
+                self.connection_controller,
+                self.update_email_controller,
+                self.update_password_controller,
+            )
+            self.add_submenu("Modifier votre compte", update_account_menu)
+
     def _draw_client_menu(self):
         """Draw client menu"""
         if self.user_connected is not None and not self.user_connected.is_tenant:
@@ -100,9 +118,19 @@ class Home(Menu):
                     args=(self.user_connected, self.current_tombola),
                 )
             else:
-                print("Aucune tombola en cours")
+                self.subtitle = "Aucune tombola en cours"
+
+            update_account_menu = UpdateAccount(
+                self.user_connected,
+                self.connection_controller,
+                self.update_email_controller,
+                self.update_password_controller,
+            )
+            self.add_submenu("Modifier votre compte", update_account_menu)
 
     def draw(self):
+        self.subtitle = None
+
         if self.user_connected is None:
             self.user_connected = (
                 self.register_item.get_return() or self.login_item.get_return()

@@ -1,14 +1,14 @@
 from getpass import getpass
 from consolemenu.prompt_utils import UserQuit
 
-from src.views.generics.menu import Form
+from src.views.generics.menu import Form, Menu
 from src.exceptions.user_not_found_exception import UserNotFoundException
 from src.models.user_model import UserModel
 from src.controllers.iconnection_controller import IConnectionController
 
 
 class Login(Form):
-    def __init__(self, parent_menu, connection_controller: IConnectionController):
+    def __init__(self, parent_menu: Menu, connection_controller: IConnectionController):
         super().__init__(parent_menu)
         self.connection_controller = connection_controller
 

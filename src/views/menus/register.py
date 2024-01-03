@@ -1,13 +1,12 @@
 from consolemenu.prompt_utils import UserQuit
-from getpass import getpass
 
 from src.exceptions.password_exception import PasswordException
-from src.views.generics.menu import Form
+from src.views.generics.menu import Form, Menu
 from src.controllers.iregister_controller import IRegisterController
 
 
 class Register(Form):
-    def __init__(self, parent_menu, register_controller: IRegisterController):
+    def __init__(self, parent_menu: Menu, register_controller: IRegisterController):
         super().__init__(parent_menu)
         self.register_controller = register_controller
 
@@ -15,8 +14,8 @@ class Register(Form):
         try:
             print("Formulaire d'enregistrement")
             email = self._prompt_email("Entrez votre email : ", enable_quit=True)
-            password = getpass("Entrez votre mot de passe : ")
-            confirm_password = getpass("Confirmez votre mot de passe : ")
+            password = self._prompt_password("Entrez votre mot de passe : ")
+            confirm_password = self._prompt_password("Confirmez votre mot de passe : ")
             postal_code = self._prompt_user("Entrez votre code postal : ")
             city_name = self._prompt_user("Entrez votre ville : ")
 

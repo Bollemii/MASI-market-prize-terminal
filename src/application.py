@@ -1,6 +1,10 @@
 import os
 from src.controllers.check_tombola_dates_controller import CheckTombolaDatesController
 from src.controllers.get_tombola_state_controller import GetTombolaStateController
+from src.controllers.update_email_account_controller import UpdateEmailAccountController
+from src.controllers.update_password_account_controller import (
+    UpdatePasswordAccountController,
+)
 
 from src.utils.uuid_manager import UUIDManager
 from src.utils.password_manager import PasswordManager
@@ -75,6 +79,8 @@ class Application:
         self.check_tombola_dates_controller = CheckTombolaDatesController(
             self.tombola_dao
         )
+        self.update_email_controller = UpdateEmailAccountController(self.user_dao)
+        self.update_password_controller = UpdatePasswordAccountController(self.user_dao)
 
     def run(self):
         """Run the application"""
@@ -87,5 +93,7 @@ class Application:
             self.get_current_tombola_controller,
             self.get_tombola_state_controller,
             self.check_tombola_dates_controller,
+            self.update_email_controller,
+            self.update_password_controller,
             self.uuid_manager,
         ).show()

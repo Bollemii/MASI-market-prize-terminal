@@ -1,8 +1,8 @@
 from consolemenu.prompt_utils import UserQuit
 from time import sleep
-from src.models.tombola_model import TombolaModel
 
-from src.views.generics.menu import Form
+from src.models.tombola_model import TombolaModel
+from src.views.generics.menu import Form, Menu
 from src.views.animation.animation import Slot
 from src.controllers.iplay_ticket_controller import IPlayTicketController
 from src.models.user_model import UserModel
@@ -12,7 +12,7 @@ from src.utils.iuuid_manager import IUUIDManager
 class PlayTicket(Form):
     def __init__(
         self,
-        parent_menu,
+        parent_menu: Menu,
         play_ticket_controller: IPlayTicketController,
         uuid_manager: IUUIDManager,
     ):

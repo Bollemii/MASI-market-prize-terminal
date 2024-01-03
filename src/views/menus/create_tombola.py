@@ -1,7 +1,7 @@
 from datetime import datetime
 from consolemenu.prompt_utils import UserQuit
 
-from src.views.generics.menu import Form
+from src.views.generics.menu import Form, Menu
 from src.controllers.icreate_tombola_controller import ICreateTombolaController
 from src.controllers.iget_ticket_controller import IGetTicketController
 from src.controllers.icheck_tombola_dates_controller import ICheckTombolaDatesController
@@ -11,7 +11,7 @@ from src.models.prize_model import PrizeModel
 class CreateTombola(Form):
     def __init__(
         self,
-        parent_menu,
+        parent_menu: Menu,
         create_tombola_controller: ICreateTombolaController,
         get_ticket_controller: IGetTicketController,
         check_tombola_controller: ICheckTombolaDatesController,
