@@ -10,7 +10,7 @@ source deploy.sh
 
 This script will build the Docker image and run the container.
 
-A tenant can be created by the administrator. To do this, the administrator must run the following python file:
+A tenant can be created by the administrator. To do this, the administrator must follow the instructions bellow to create and use a virtual environment, install the project packages and run the script add_tenant_user.py.
 
 ```bash
 python3 add_tenant_user.py
