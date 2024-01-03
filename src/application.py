@@ -1,10 +1,4 @@
 import os
-from src.controllers.check_tombola_dates_controller import CheckTombolaDatesController
-from src.controllers.get_tombola_state_controller import GetTombolaStateController
-from src.controllers.update_email_account_controller import UpdateEmailAccountController
-from src.controllers.update_password_account_controller import (
-    UpdatePasswordAccountController,
-)
 
 from src.utils.uuid_manager import UUIDManager
 from src.utils.password_manager import PasswordManager
@@ -24,6 +18,14 @@ from src.controllers.register_controller import RegisterController
 from src.controllers.create_tombola_controller import CreateTombolaController
 from src.controllers.get_ticket_controller import GetTicketController
 from src.controllers.get_current_tombola_controller import GetCurrentTombolaController
+from src.controllers.check_tombola_dates_controller import CheckTombolaDatesController
+from src.controllers.get_tombola_state_controller import GetTombolaStateController
+from src.controllers.get_user_by_email_controller import GetUserByEmailController
+from src.controllers.update_email_account_controller import UpdateEmailAccountController
+from src.controllers.update_password_account_controller import (
+    UpdatePasswordAccountController,
+)
+from src.controllers.is_tenant_password_controller import IsTenantPasswordController
 from src.views.home import Home
 
 
@@ -81,6 +83,8 @@ class Application:
         )
         self.update_email_controller = UpdateEmailAccountController(self.user_dao)
         self.update_password_controller = UpdatePasswordAccountController(self.user_dao)
+        self.get_user_by_email_controller = GetUserByEmailController(self.user_dao)
+        self.is_tenant_password_controller = IsTenantPasswordController(self.user_dao)
 
     def run(self):
         """Run the application"""
@@ -95,5 +99,7 @@ class Application:
             self.check_tombola_dates_controller,
             self.update_email_controller,
             self.update_password_controller,
+            self.get_user_by_email_controller,
+            self.is_tenant_password_controller,
             self.uuid_manager,
         ).show()

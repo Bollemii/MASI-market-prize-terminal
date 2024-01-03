@@ -11,6 +11,10 @@ class IUserRepository(ABC):
         """Get user by id"""
 
     @abstractmethod
+    def get_by_email(self, email: str) -> UserEntity | None:
+        """Get user by email"""
+
+    @abstractmethod
     def update_email(self, id: int, email: str) -> UserEntity:
         """Update the user email"""
 
@@ -27,3 +31,7 @@ class IUserRepository(ABC):
         self, email: str, password: str, city_name: str, postal_code: str
     ) -> UserEntity:
         """Register a user"""
+
+    @abstractmethod
+    def check_tenant_password(self, password: str) -> bool:
+        """Check if the tenant password is correct"""

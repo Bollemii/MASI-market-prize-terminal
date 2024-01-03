@@ -1,6 +1,6 @@
-from src.dataaccess.repositories.iuser_repository import IUserRepository
 from src.exceptions.password_exception import PasswordException
 from src.utils.ipassword_manager import IPasswordManager
+from src.dataaccess.repositories.iuser_repository import IUserRepository
 from src.dataaccess.repositories.icity_repository import ICityRepository
 from src.dataaccess.repositories.common.sqlite_repository import SqliteRepository
 from src.dataaccess.entities.user_entity import UserEntity
@@ -46,6 +46,15 @@ class UserRepository(SqliteRepository, IUserRepository):
         result = self.execute_query("SELECT * FROM user WHERE id = ?", (id,))
         if len(result) == 0:
             return None
+        id, email, password, city_id, is_tenant, _, _ = result[0]
+        return self._create_entity(id, email, password, city_id, is_tenant)
+
+    def get_by_email(self, email: str) -> UserEntity | None:
+        result = self.execute_query("SELECT * FROM user WHERE email = ?", (email,))
+        if len(result) == 0:
+            return None
+        if len(result) > 1:
+            raise Exception("Multiple users found")
         id, email, password, city_id, is_tenant, _, _ = result[0]
         return self._create_entity(id, email, password, city_id, is_tenant)
 
@@ -98,3 +107,12 @@ class UserRepository(SqliteRepository, IUserRepository):
 
         id, email, password, city_id, is_tenant, _, _ = result[0]
         return self._create_entity(id, email, password, city_id, is_tenant)
+
+    def check_tenant_password(self, password: str) -> bool:
+        result = self.execute_query("SELECT password FROM user WHERE is_tenant = TRUE")
+        if len(result) == 0:
+            raise Exception("Tenant not found")
+        if len(result) > 1:
+            raise Exception("Multiple tenants found")
+        encrypted_password = result[0][0]
+        return self.password_manager.check_password(password, encrypted_password)

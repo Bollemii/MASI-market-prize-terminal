@@ -1,7 +1,7 @@
-from src.dataaccess.dao.iuser_dao import IUserDAO
 from src.models.user_model import UserModel
 from src.dataaccess.entities.user_entity import UserEntity
 from src.dataaccess.repositories.iuser_repository import IUserRepository
+from src.dataaccess.dao.iuser_dao import IUserDAO
 from src.dataaccess.dao.icity_dao import ICityDAO
 from src.exceptions.user_not_found_exception import UserNotFoundException
 
@@ -47,3 +47,12 @@ class UserDAO(IUserDAO):
         if entity is None:
             raise Exception("User not updated")
         return self.convert_user_entity_to_user_model(entity)
+
+    def check_tenant_password(self, password: str) -> bool:
+        return self.user_repository.check_tenant_password(password)
+
+    def get_by_email(self, email: str) -> UserModel:
+        user = self.user_repository.get_by_email(email)
+        if user is None:
+            raise UserNotFoundException()
+        return self.convert_user_entity_to_user_model(user)
