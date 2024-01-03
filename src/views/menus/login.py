@@ -14,7 +14,7 @@ class Login(Form):
 
     def execute(self) -> UserModel | None:
         try:
-            print("Formulaire de connexion")
+            print("Formulaire de connexion\n")
             email = self._prompt_email("Entrez votre email : ", enable_quit=True)
             password = getpass("Entrez votre mot de passe : ")
 
