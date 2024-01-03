@@ -1,7 +1,10 @@
 import sqlite3
 from src.utils.password_manager import PasswordManager
+import os
 
 password_manager = PasswordManager()
+base_path = os.path.join(os.getcwd(), "data")
+os.makedirs(base_path, exist_ok=True)
 with sqlite3.connect("data/database.sqlite") as connection:
     c = connection.cursor()
 
