@@ -34,7 +34,8 @@ class CreateTombola(Form):
                     "La date de début doit être avant la date de fin"
                 )
                 return
-            if start_date < datetime.now():
+            start_date = start_date.replace(minute=1)
+            if start_date.date() < datetime.now().date():
                 self._prompt_to_continue(
                     "Vous ne pouvez pas créer une tombola dans le passé"
                 )
