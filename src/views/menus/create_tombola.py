@@ -23,7 +23,7 @@ class CreateTombola(Form):
 
     def execute(self):
         try:
-            print("Formulaire de création de tombola")
+            print("Formulaire de création de tombola\n")
             start_date = self._prompt_date(
                 "Entrez la date de début de la tombola", enable_quit=True
             )

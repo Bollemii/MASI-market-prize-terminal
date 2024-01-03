@@ -12,7 +12,7 @@ class Register(Form):
 
     def execute(self):
         try:
-            print("Formulaire d'enregistrement")
+            print("Formulaire d'enregistrement\n")
             email = self._prompt_email("Entrez votre email : ", enable_quit=True)
             password = self._prompt_password("Entrez votre mot de passe : ")
             confirm_password = self._prompt_password("Confirmez votre mot de passe : ")

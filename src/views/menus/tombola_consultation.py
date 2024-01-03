@@ -23,7 +23,7 @@ class TombolaConsultation(Form):
         prizes = self.get_tombola_state_controller.get_prizes_state(tombola_model.id)
 
         format = "%d/%m/%Y"
-        print("Consultation de la tombola en cours")
+        print("Consultation de la tombola en cours\n")
         print(f"Date de début : {tombola_model.start_date.strftime(format)}")
         print(f"Date de fin : {tombola_model.end_date.strftime(format)}")
         print(f"Tickets : {tickets_played} joués - {tickets_remaining} restants")

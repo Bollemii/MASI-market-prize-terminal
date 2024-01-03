@@ -1,4 +1,6 @@
 from consolemenu.items import FunctionItem
+from src.controllers.iget_user_by_email_controller import IGetUserByEmailController
+from src.controllers.iis_tenant_password_controller import IIsTenantPasswordController
 from src.controllers.iupdate_email_account_controller import (
     IUpdateEmailAccountController,
 )
@@ -9,6 +11,7 @@ from src.controllers.iupdate_password_account_controller import (
 from src.models.user_model import UserModel
 from src.utils.iuuid_manager import IUUIDManager
 from src.views.generics.menu import Menu
+from src.views.menus.password_recovery import PasswordRecovery
 from src.views.menus.tombola_consultation import TombolaConsultation
 from src.views.menus.register import Register
 from src.views.menus.create_tombola import CreateTombola
@@ -38,6 +41,8 @@ class Home(Menu):
         check_tombola_controller: ICheckTombolaDatesController,
         update_email_controller: IUpdateEmailAccountController,
         update_password_controller: IUpdatePasswordAccountController,
+        get_user_by_email_controller: IGetUserByEmailController,
+        is_tenant_password_controller: IIsTenantPasswordController,
         uuid_manager: IUUIDManager,
     ):
         super().__init__("Bienvenue sur la borne chanceuse", exit_option_text="Quitter")
@@ -52,10 +57,18 @@ class Home(Menu):
         self.check_tombola_controller = check_tombola_controller
         self.update_email_controller = update_email_controller
         self.update_password_controller = update_password_controller
+        self.get_user_by_email_controller = get_user_by_email_controller
+        self.is_tenant_password_controller = is_tenant_password_controller
         self.uuid_manager = uuid_manager
 
         self.register_menu = Register(self, register_controller)
         self.login_menu = Login(self, connection_controller)
+        self.password_recovery_menu = PasswordRecovery(
+            self,
+            get_user_by_email_controller,
+            is_tenant_password_controller,
+            update_password_controller,
+        )
         self.create_tombola_menu = CreateTombola(
             self,
             create_tombola_controller,
@@ -87,6 +100,7 @@ class Home(Menu):
         if self.user_connected is None:
             self.append_item(self.login_item)
             self.append_item(self.register_item)
+            self.add_form("Récupérer votre mot de passe", self.password_recovery_menu)
 
     def _draw_tenant_menu(self):
         """Draw tenant menu"""

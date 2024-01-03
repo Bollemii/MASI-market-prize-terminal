@@ -26,3 +26,11 @@ class IUserDAO(ABC):
         self, user: UserModel, email: str | None = None, password: str | None = None
     ) -> UserModel:
         """Update user"""
+
+    @abstractmethod
+    def check_tenant_password(self, password: str) -> bool:
+        """Check if the tenant password is correct"""
+
+    @abstractmethod
+    def get_by_email(self, email: str) -> UserModel:
+        """Get user by email"""
