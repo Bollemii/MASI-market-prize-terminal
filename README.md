@@ -2,7 +2,7 @@
 
 To deploy the application, you can use the script deploy.sh.
 
-**Before running the script, you need to have Docker installed on your machine.**
+**Before running the script, you need to have [Docker](https://docs.docker.com/engine/install/) installed on your machine.**
 
 ```bash
 source deploy.sh
@@ -10,16 +10,19 @@ source deploy.sh
 
 This script will build the Docker image and run the container.
 
-A tenant can be created by the administrator. To do this, the administrator must follow the instructions bellow to create and use a virtual environment, install the project packages and run the script add_tenant_user.py.
+A tenant account can be created by the administrator. To do this, he must follow the instructions bellow to create and use a virtual environment, install the project packages and run the script add_tenant_user.py.
 
 ```bash
+# python3 or python depending on your system
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
 python3 add_tenant_user.py
-# or depending on your python version
-python add_tenant_user.py
 ```
 
-This user have informations:
-
+This default tenant has the following credentials:
 - email: admin@adm.adm
 - password: admin
 - city: Paris, 75000
