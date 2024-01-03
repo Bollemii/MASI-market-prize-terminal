@@ -3,11 +3,11 @@ from consolemenu.items import FunctionItem
 from src.models.user_model import UserModel
 from src.utils.iuuid_manager import IUUIDManager
 from src.views.generics.menu import Menu
-from src.views.forms.tombola_consultation import TombolaConsultation
-from src.views.forms.register import Register
-from src.views.forms.create_tombola import CreateTombola
-from src.views.forms.play_ticket import PlayTicket
-from src.views.forms.login import Login
+from src.views.menus.tombola_consultation import TombolaConsultation
+from src.views.menus.register import Register
+from src.views.menus.create_tombola import CreateTombola
+from src.views.menus.play_ticket import PlayTicket
+from src.views.menus.login import Login
 from src.controllers.iregister_controller import IRegisterController
 from src.controllers.iconnection_controller import IConnectionController
 from src.controllers.icreate_tombola_controller import ICreateTombolaController

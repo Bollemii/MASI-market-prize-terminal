@@ -49,10 +49,20 @@ class UserRepository(SqliteRepository, IUserRepository):
         id, email, password, city_id, is_tenant, _, _ = result[0]
         return self._create_entity(id, email, password, city_id, is_tenant)
 
-    def update(self, id: int, email: str, password: str) -> UserEntity:
+    def update_email(self, id: int, email: str) -> UserEntity:
         result = self.execute_statement(
-            "UPDATE user SET email = ?, password = ? WHERE id = ?",
-            (email, self.password_manager.encrypt_password(password), id),
+            "UPDATE user SET email = ? WHERE id = ?",
+            (email, id),
+        )
+        if result is None or len(result) == 0:
+            raise Exception("User not updated")
+        id, email, password, city_id, is_tenant, _, _ = result[0]
+        return self._create_entity(id, email, password, city_id, is_tenant)
+
+    def update_password(self, id: int, password: str) -> UserEntity:
+        result = self.execute_statement(
+            "UPDATE user SET password = ? WHERE id = ?",
+            (self.password_manager.encrypt_password(password), id),
         )
         if result is None or len(result) == 0:
             raise Exception("User not updated")

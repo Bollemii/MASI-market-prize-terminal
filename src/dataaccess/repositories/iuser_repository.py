@@ -11,8 +11,12 @@ class IUserRepository(ABC):
         """Get user by id"""
 
     @abstractmethod
-    def update(self, id: int, email: str, password: str) -> UserEntity:
-        """Update a user"""
+    def update_email(self, id: int, email: str) -> UserEntity:
+        """Update the user email"""
+
+    @abstractmethod
+    def update_password(self, id: int, password: str) -> UserEntity:
+        """Update the user password"""
 
     @abstractmethod
     def connection(self, email: str, password: str) -> UserEntity | None:

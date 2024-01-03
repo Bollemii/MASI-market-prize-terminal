@@ -22,5 +22,7 @@ class IUserDAO(ABC):
         """Register user"""
 
     @abstractmethod
-    def update(self, user: UserModel, email: str, password: str) -> UserModel:
+    def update(
+        self, user: UserModel, email: str | None = None, password: str | None = None
+    ) -> UserModel:
         """Update user"""

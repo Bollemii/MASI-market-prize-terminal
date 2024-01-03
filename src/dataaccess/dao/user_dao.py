@@ -35,6 +35,15 @@ class UserDAO(IUserDAO):
         entity = self.user_repository.register(email, password, city_name, postal_code)
         return self.convert_user_entity_to_user_model(entity)
 
-    def update(self, user: UserModel, email: str, password: str) -> UserModel:
-        entity = self.user_repository.update(user.id, email, password)
+    def update(
+        self, user: UserModel, email: str | None = None, password: str | None = None
+    ) -> UserModel:
+        entity = None
+        if email is not None:
+            entity = self.user_repository.update_email(user.id, email)
+        elif password is not None:
+            entity = self.user_repository.update_password(user.id, password)
+
+        if entity is None:
+            raise Exception("User not updated")
         return self.convert_user_entity_to_user_model(entity)
