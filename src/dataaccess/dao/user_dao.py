@@ -1,9 +1,9 @@
 from src.dataaccess.dao.iuser_dao import IUserDAO
-from src.model.user_model import UserModel
-from src.dataaccess.entity.user_entity import UserEntity
-from src.dataaccess.repository.iuser_repository import IUserRepository
+from src.models.user_model import UserModel
+from src.dataaccess.entities.user_entity import UserEntity
+from src.dataaccess.repositories.iuser_repository import IUserRepository
 from src.dataaccess.dao.icity_dao import ICityDAO
-from src.exception.user_not_found_exception import UserNotFoundException
+from src.exceptions.user_not_found_exception import UserNotFoundException
 
 
 class UserDAO(IUserDAO):

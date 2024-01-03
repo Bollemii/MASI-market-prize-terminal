@@ -4,11 +4,11 @@ from src.controllers.get_tombola_state_controller import GetTombolaStateControll
 
 from src.utils.uuid_manager import UUIDManager
 from src.utils.password_manager import PasswordManager
-from src.dataaccess.repository.city_repository import CityRepository
-from src.dataaccess.repository.prize_repository import PrizeRepository
-from src.dataaccess.repository.tombola_repository import TombolaRepository
-from src.dataaccess.repository.ticket_repository import TicketRepository
-from src.dataaccess.repository.user_repository import UserRepository
+from src.dataaccess.repositories.city_repository import CityRepository
+from src.dataaccess.repositories.prize_repository import PrizeRepository
+from src.dataaccess.repositories.tombola_repository import TombolaRepository
+from src.dataaccess.repositories.ticket_repository import TicketRepository
+from src.dataaccess.repositories.user_repository import UserRepository
 from src.dataaccess.dao.city_dao import CityDAO
 from src.dataaccess.dao.prize_dao import PrizeDAO
 from src.dataaccess.dao.tombola_dao import TombolaDAO

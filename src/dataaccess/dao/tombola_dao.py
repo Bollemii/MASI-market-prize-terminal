@@ -1,12 +1,12 @@
 from datetime import datetime
 from src.dataaccess.dao.itombola_dao import ITombolaDAO
 
-from src.dataaccess.entity.tombola_entity import TombolaEntity
-from src.dataaccess.repository.itombola_repository import ITombolaRepository
-from src.dataaccess.repository.iticket_repository import ITicketRepository
-from src.dataaccess.repository.iprize_repository import IPrizeRepository
-from src.model.tombola_model import TombolaModel
-from src.model.prize_model import PrizeModel
+from src.dataaccess.entities.tombola_entity import TombolaEntity
+from src.dataaccess.repositories.itombola_repository import ITombolaRepository
+from src.dataaccess.repositories.iticket_repository import ITicketRepository
+from src.dataaccess.repositories.iprize_repository import IPrizeRepository
+from src.models.tombola_model import TombolaModel
+from src.models.prize_model import PrizeModel
 from src.utils.iuuid_manager import IUUIDManager
 
 

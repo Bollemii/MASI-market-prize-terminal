@@ -1,7 +1,7 @@
 from src.controllers.iget_tombola_state_controller import IGetTombolaStateController
 from src.dataaccess.dao.iprize_dao import IPrizeDAO
 from src.dataaccess.dao.iticket_dao import ITicketDAO
-from src.model.prize_model import PrizeModel
+from src.models.prize_model import PrizeModel
 
 
 class GetTombolaStateController(IGetTombolaStateController):

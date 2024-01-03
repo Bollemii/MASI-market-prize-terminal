@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.model.prize_model import PrizeModel
+from src.models.prize_model import PrizeModel
 
 
 class IGetTombolaStateController(ABC):

@@ -1,6 +1,6 @@
 from src.controllers.iget_ticket_controller import IGetTicketController
 from src.dataaccess.dao.iticket_dao import ITicketDAO
-from src.model.ticket_model import TicketModel
+from src.models.ticket_model import TicketModel
 
 
 class GetTicketController(IGetTicketController):

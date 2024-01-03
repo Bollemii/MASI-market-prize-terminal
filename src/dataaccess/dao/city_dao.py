@@ -1,7 +1,7 @@
 from src.dataaccess.dao.icity_dao import ICityDAO
-from src.dataaccess.entity.city_entity import CityEntity
-from src.dataaccess.repository.icity_repository import ICityRepository
-from src.model.city_model import CityModel
+from src.dataaccess.entities.city_entity import CityEntity
+from src.dataaccess.repositories.icity_repository import ICityRepository
+from src.models.city_model import CityModel
 
 
 class CityDAO(ICityDAO):

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.model.user_model import UserModel
+from src.models.user_model import UserModel
 
 
 class IConnectionController(ABC):

@@ -1,13 +1,13 @@
 from consolemenu.items import FunctionItem
 
-from src.model.user_model import UserModel
+from src.models.user_model import UserModel
 from src.utils.iuuid_manager import IUUIDManager
-from src.views.form.tombola_consultation import TombolaConsultation
 from src.views.generics.menu import Menu
-from src.views.form.register import Register
-from src.views.form.create_tombola import CreateTombola
-from src.views.form.play_ticket import PlayTicket
-from src.views.form.login import Login
+from src.views.forms.tombola_consultation import TombolaConsultation
+from src.views.forms.register import Register
+from src.views.forms.create_tombola import CreateTombola
+from src.views.forms.play_ticket import PlayTicket
+from src.views.forms.login import Login
 from src.controllers.iregister_controller import IRegisterController
 from src.controllers.iconnection_controller import IConnectionController
 from src.controllers.icreate_tombola_controller import ICreateTombolaController
@@ -82,32 +82,23 @@ class Home(Menu):
         """Draw tenant menu"""
         if self.user_connected is not None and self.user_connected.is_tenant:
             if self.current_tombola is None:
-                create_tombola_item = FunctionItem(
-                    "Créer une tombola",
-                    self.create_tombola_menu.execute,
-                )
-                self.append_item(create_tombola_item)
+                self.add_form("Créer une tombola", self.create_tombola_menu)
             else:
-                consultation_item = FunctionItem(
+                self.add_form(
                     "Consulter la tombola en cours",
-                    self.tombola_consultation_menu.execute,
+                    self.tombola_consultation_menu,
                     args=(self.current_tombola,),
                 )
-                self.append_item(consultation_item)
 
     def _draw_client_menu(self):
         """Draw client menu"""
         if self.user_connected is not None and not self.user_connected.is_tenant:
             if self.current_tombola is not None:
-                play_ticket_item = FunctionItem(
+                self.add_form(
                     "Jouer un ticket",
-                    self.play_ticket_menu.execute,
-                    args=(
-                        self.user_connected,
-                        self.current_tombola,
-                    ),
+                    self.play_ticket_menu,
+                    args=(self.user_connected, self.current_tombola),
                 )
-                self.append_item(play_ticket_item)
             else:
                 print("Aucune tombola en cours")
 

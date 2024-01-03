@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from src.dataaccess.entity.city_entity import CityEntity
-from src.model.city_model import CityModel
+from src.dataaccess.entities.city_entity import CityEntity
+from src.models.city_model import CityModel
 
 
 class ICityDAO(ABC):

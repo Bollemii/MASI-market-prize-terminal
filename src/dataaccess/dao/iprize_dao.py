@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from src.dataaccess.entity.prize_entity import PrizeEntity
-from src.model.prize_model import PrizeModel
+from src.dataaccess.entities.prize_entity import PrizeEntity
+from src.models.prize_model import PrizeModel
 
 
 class IPrizeDAO(ABC):

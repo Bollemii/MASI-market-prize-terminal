@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from src.dataaccess.entity.user_entity import UserEntity
-from src.model.user_model import UserModel
+from src.dataaccess.entities.user_entity import UserEntity
+from src.models.user_model import UserModel
 
 
 class IUserDAO(ABC):
