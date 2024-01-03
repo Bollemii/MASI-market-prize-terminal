@@ -2,11 +2,11 @@ from src.dataaccess.dao.iticket_dao import ITicketDAO
 from src.dataaccess.dao.iuser_dao import IUserDAO
 from src.dataaccess.dao.iprize_dao import IPrizeDAO
 from src.dataaccess.dao.itombola_dao import ITombolaDAO
-from src.dataaccess.repository.iticket_repository import ITicketRepository
-from src.dataaccess.entity.ticket_entity import TicketEntity
-from src.exception.ticket_not_found_exception import TicketNotFoundException
-from src.model.ticket_model import TicketModel
-from src.model.user_model import UserModel
+from src.dataaccess.repositories.iticket_repository import ITicketRepository
+from src.dataaccess.entities.ticket_entity import TicketEntity
+from src.exceptions.ticket_not_found_exception import TicketNotFoundException
+from src.models.ticket_model import TicketModel
+from src.models.user_model import UserModel
 
 
 class TicketDAO(ITicketDAO):

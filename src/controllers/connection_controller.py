@@ -1,6 +1,6 @@
 from src.controllers.iconnection_controller import IConnectionController
 from src.dataaccess.dao.iuser_dao import IUserDAO
-from src.model.user_model import UserModel
+from src.models.user_model import UserModel
 
 
 class ConnectionController(IConnectionController):

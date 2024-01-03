@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.model.tombola_model import TombolaModel
+from src.models.tombola_model import TombolaModel
 
 
 class IGetCurrentTombolaController(ABC):

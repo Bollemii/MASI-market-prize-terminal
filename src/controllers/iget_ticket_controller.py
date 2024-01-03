@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.model.ticket_model import TicketModel
+from src.models.ticket_model import TicketModel
 
 
 class IGetTicketController(ABC):

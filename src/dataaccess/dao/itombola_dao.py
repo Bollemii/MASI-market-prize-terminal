@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from src.dataaccess.entity.tombola_entity import TombolaEntity
-from src.model.tombola_model import TombolaModel
-from src.model.prize_model import PrizeModel
+from src.dataaccess.entities.tombola_entity import TombolaEntity
+from src.models.tombola_model import TombolaModel
+from src.models.prize_model import PrizeModel
 
 
 class ITombolaDAO(ABC):

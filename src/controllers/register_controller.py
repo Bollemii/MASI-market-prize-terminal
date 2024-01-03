@@ -1,7 +1,7 @@
 from src.controllers.iregister_controller import IRegisterController
 from src.dataaccess.dao.iuser_dao import IUserDAO
-from src.exception.password_exception import PasswordException
-from src.model.user_model import UserModel
+from src.exceptions.password_exception import PasswordException
+from src.models.user_model import UserModel
 
 
 class RegisterController(IRegisterController):

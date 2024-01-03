@@ -1,6 +1,6 @@
 from src.controllers.iget_current_tombola_controller import IGetCurrentTombolaController
 from src.dataaccess.dao.itombola_dao import ITombolaDAO
-from src.model.tombola_model import TombolaModel
+from src.models.tombola_model import TombolaModel
 
 
 class GetCurrentTombolaController(IGetCurrentTombolaController):

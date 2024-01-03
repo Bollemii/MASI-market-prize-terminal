@@ -1,9 +1,9 @@
 from src.dataaccess.dao.iprize_dao import IPrizeDAO
 from src.dataaccess.dao.itombola_dao import ITombolaDAO
-from src.dataaccess.repository.iprize_repository import IPrizeRepository
-from src.dataaccess.entity.prize_entity import PrizeEntity
-from src.exception.prize_not_found_exception import PrizeNotFoundException
-from src.model.prize_model import PrizeModel
+from src.dataaccess.repositories.iprize_repository import IPrizeRepository
+from src.dataaccess.entities.prize_entity import PrizeEntity
+from src.exceptions.prize_not_found_exception import PrizeNotFoundException
+from src.models.prize_model import PrizeModel
 
 
 class PrizeDAO(IPrizeDAO):

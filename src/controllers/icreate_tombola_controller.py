@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from src.model.prize_model import PrizeModel
-from src.model.tombola_model import TombolaModel
+from src.models.prize_model import PrizeModel
+from src.models.tombola_model import TombolaModel
 
 
 class ICreateTombolaController(ABC):

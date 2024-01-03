@@ -2,8 +2,8 @@ from datetime import datetime
 
 from src.controllers.icreate_tombola_controller import ICreateTombolaController
 from src.dataaccess.dao.itombola_dao import ITombolaDAO
-from src.model.prize_model import PrizeModel
-from src.model.tombola_model import TombolaModel
+from src.models.prize_model import PrizeModel
+from src.models.tombola_model import TombolaModel
 
 
 class CreateTombolaController(ICreateTombolaController):

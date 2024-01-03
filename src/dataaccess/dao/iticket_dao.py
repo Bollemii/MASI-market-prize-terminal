@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from src.dataaccess.entity.ticket_entity import TicketEntity
-from src.model.ticket_model import TicketModel
-from src.model.user_model import UserModel
+from src.dataaccess.entities.ticket_entity import TicketEntity
+from src.models.ticket_model import TicketModel
+from src.models.user_model import UserModel
 
 
 class ITicketDAO(ABC):

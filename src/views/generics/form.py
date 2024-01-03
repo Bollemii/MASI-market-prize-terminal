@@ -70,6 +70,10 @@ class Form(ABC):
             return self._prompt_email(message, enable_quit=enable_quit)
         return email
 
+    def _prompt_password(self, message: str) -> str:
+        """Prompt user for a password"""
+        return PromptUtils(self.parent_menu.screen).input_password(message)
+
     @abstractmethod
     def execute(self):
         """Execute the form and return the result"""
