@@ -1,50 +1,55 @@
-# Virtual environment
+# To deploy the application
 
-## Create the vitual environment
+To deploy the application, you can use the script deploy.sh.
 
+**Before running the script, you need to have Docker installed on your machine.**
 ```bash
-make venv
+source deploy.sh
+```
+This script will build the Docker image and run the container.
+It will also create a default tenant user as a superuser. You can change its informations with the application or directly in the database.
+This user have informations:
+- email: admin@adm.adm
+- password: admin
+- city: Paris, 75000
 
-ln -s .venv/bin/activate ./activate #mac and linux
+# To develop on this project
+
+## Virtual environment
+To develop on this project you need to create a virtual environment. This will allow you to install packages only for this project and not for your whole system.
+
+### Create the vitual environment
+```bash
+python3 -m venv venv
 ```
 
-## Activate the virtual environment
-
+### Activate the virtual environment
 ```bash
-source ./activate #mac and linux
+source venv/bin/activate
 ```
 
-## Deactivate the virtual environment
-
+### Deactivate the virtual environment
 ```bash
 deactivate
 ```
 
-# Package installation
-
+### Install project packages
 ```bash
-make install
+pip install -r requirements.txt
 ```
 
-## After package installation
-
-If you install any package needed for your features don't forget to add it to requierements.txt.
+### Add a package to the project
+After installing a package, you need to add it to the requirements.txt file to keep track of the project dependencies.
 
 ```bash
-pip install package
+pip install your_package
 pip freeze > requirements.txt
 ```
 
-# Pre-commit
+## Pre-commit
+The pre-commit package is used to run some checks before committing your code. It will run the black formatter and the flake8 linter.
 
-## Install pre-commit
-
+### Install pre-commit
 ```bash
 pre-commit install
-```
-
-## Run pre-commit
-
-```bash
-pre-commit run -a
 ```
