@@ -28,8 +28,8 @@ class UserRepository(SqliteRepository, IUserRepository):
                 "password" TEXT NOT NULL,
                 "city_id" INTEGER NOT NULL REFERENCES "City" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
                 "is_tenant" BOOLEAN NOT NULL DEFAULT FALSE,
-                "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                "updated" DATETIME NULL
+                "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                "updated_at" DATETIME NULL
             );
         """
         )
