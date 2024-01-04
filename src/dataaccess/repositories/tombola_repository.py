@@ -15,9 +15,7 @@ class TombolaRepository(SqliteRepository, ITombolaRepository):
             CREATE TABLE IF NOT EXISTS tombola (
                 "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 "start_date" DATETIME NOT NULL,
-                "end_date" DATETIME NOT NULL,
-                "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                "updated" DATETIME NULL
+                "end_date" DATETIME NOT NULL
             );
         """
         )
@@ -56,7 +54,7 @@ class TombolaRepository(SqliteRepository, ITombolaRepository):
         )
         if result is None or len(result) == 0:
             raise Exception("Tombola not created")
-        id, start_date_str, end_date_str, _, _ = result[0]
+        id, start_date_str, end_date_str = result[0]
         return TombolaEntity(
             id,
             datetime.fromisoformat(start_date_str),

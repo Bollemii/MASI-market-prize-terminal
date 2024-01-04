@@ -27,8 +27,6 @@ class PrizeRepository(SqliteRepository, IPrizeRepository):
                 "prize_id" INTEGER NOT NULL,
                 "nb_available" INTEGER NOT NULL,
                 "nb_won" INTEGER NOT NULL DEFAULT 0,
-                "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                "updated" DATETIME NULL,
                 CONSTRAINT "Tombola_Prize_tombola_id_fkey" FOREIGN KEY ("tombola_id") REFERENCES "Tombola" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
                 CONSTRAINT "Tombola_Prize_prize_id_fkey" FOREIGN KEY ("prize_id") REFERENCES "Prize" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
             );
@@ -74,7 +72,7 @@ class PrizeRepository(SqliteRepository, IPrizeRepository):
         )
         if len(result) == 0:
             return None
-        id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
+        id, tombola_id, prize_id, nb_available, nb_won = result[0]
         return self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)
 
     def get_by_tombola_id(self, tombola_id: int) -> list[PrizeEntity]:
@@ -85,7 +83,7 @@ class PrizeRepository(SqliteRepository, IPrizeRepository):
         )
         return [
             self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)
-            for id, tombola_id, prize_id, nb_available, nb_won, _, _ in result
+            for id, tombola_id, prize_id, nb_available, nb_won in result
         ]
 
     def prize_won(self, id: int) -> PrizeEntity:
@@ -99,7 +97,7 @@ class PrizeRepository(SqliteRepository, IPrizeRepository):
         )
         if result is None or len(result) == 0:
             raise Exception("Prize not found")
-        id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
+        id, tombola_id, prize_id, nb_available, nb_won = result[0]
         return self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)
 
     def create_prize_item(self, description: str) -> int:
@@ -126,5 +124,5 @@ class PrizeRepository(SqliteRepository, IPrizeRepository):
         )
         if result is None or len(result) == 0:
             raise Exception("Prize not created")
-        id, tombola_id, prize_id, nb_available, nb_won, _, _ = result[0]
+        id, tombola_id, prize_id, nb_available, nb_won = result[0]
         return self._create_entity(id, tombola_id, prize_id, nb_available, nb_won)

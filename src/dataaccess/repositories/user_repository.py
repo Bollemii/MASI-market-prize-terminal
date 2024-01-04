@@ -28,8 +28,8 @@ class UserRepository(SqliteRepository, IUserRepository):
                 "password" TEXT NOT NULL,
                 "city_id" INTEGER NOT NULL REFERENCES "City" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
                 "is_tenant" BOOLEAN NOT NULL DEFAULT FALSE,
-                "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                "updated" DATETIME NULL
+                "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                "updated_at" DATETIME NULL
             );
         """
         )
@@ -60,7 +60,7 @@ class UserRepository(SqliteRepository, IUserRepository):
 
     def update_email(self, id: int, email: str) -> UserEntity:
         result = self.execute_statement(
-            "UPDATE user SET email = ? WHERE id = ?",
+            "UPDATE user SET email = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
             (email, id),
         )
         if result is None or len(result) == 0:
@@ -70,7 +70,7 @@ class UserRepository(SqliteRepository, IUserRepository):
 
     def update_password(self, id: int, password: str) -> UserEntity:
         result = self.execute_statement(
-            "UPDATE user SET password = ? WHERE id = ?",
+            "UPDATE user SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
             (self.password_manager.encrypt_password(password), id),
         )
         if result is None or len(result) == 0:
